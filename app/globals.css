@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --papel: 251 247 239;
+  --hoja: 255 255 255;
+  --tinta: 28 26 23;
+  --tenue: 110 104 96;
+  --linea: 226 219 205;
+  --tomate: 214 79 42;
+  --menta: 22 145 120;
+  --mostaza: 196 140 18;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papel: 22 21 19;
+    --hoja: 33 31 28;
+    --tinta: 240 235 226;
+    --tenue: 160 152 140;
+    --linea: 58 54 49;
+    --tomate: 240 112 76;
+    --menta: 64 196 166;
+    --mostaza: 230 180 70;
+    color-scheme: dark;
+  }
+}
+
+body {
+  background-color: rgb(var(--papel));
+  background-image: radial-gradient(rgb(var(--linea)) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: rgb(var(--tinta));
+}
+
+@layer components {
+  .campo {
+    @apply w-full rounded-xl border border-linea bg-hoja px-4 py-3 text-base text-tinta placeholder:text-tenue/60
+      focus:border-tomate focus:outline-none focus:ring-2 focus:ring-tomate/25;
+  }
+  .boton {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-tomate/50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .boton-primario {
+    @apply boton bg-tomate text-white hover:brightness-110;
+  }
+  .boton-secundario {
+    @apply boton border border-linea bg-hoja text-tinta hover:border-tinta/40;
+  }
+}

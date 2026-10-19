@@ -1,0 +1,32 @@
+[
+  {
+    "numero": 1,
+    "nombre": "SQL en Bloques",
+    "resumen": "Juego para aprender SQL armando consultas con piezas de arrastrar y soltar, con resultados y pistas en tiempo real.",
+    "stack": "React (Babel en el navegador) · Tailwind · motor SQL propio en JS · Vercel",
+    "repo": "https://github.com/briandh5/learningSQL",
+    "enVivo": "https://learningsql-zeta.vercel.app/",
+    "estado": "Publicada",
+    "creada": "2026-10-19"
+  },
+  {
+    "numero": 2,
+    "nombre": "SP Troop · Asistencia y Pre-nómina",
+    "resumen": "Pase de lista diario por servicio y turno, y cierre de pre-nómina quincenal exportable a Excel para una empresa de seguridad privada.",
+    "stack": "Next.js 15 · TypeScript · Tailwind · ExcelJS · Vercel",
+    "repo": "https://github.com/briandh5/sptroop-asistencia",
+    "enVivo": "https://sptroop-asistencia.vercel.app/",
+    "estado": "Publicada",
+    "creada": "2026-10-19"
+  },
+  {
+    "numero": 3,
+    "nombre": "Crecer",
+    "resumen": "Acompañamiento del desarrollo infantil: crecimiento con curvas OMS, cartilla de vacunas, hitos por edad y diario con fotos.",
+    "stack": "Next.js 15 · TypeScript · Tailwind · Recharts · PostgreSQL (Supabase) · Vercel",
+    "repo": "https://github.com/briandh5/crecer",
+    "enVivo": "https://crecer-two.vercel.app",
+    "estado": "Publicada",
+    "creada": "2026-10-19"
+  }
+]
