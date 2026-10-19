@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, Github, Plus } from "lucide-react";
+import { ArrowUpRight, FileText, Github, Linkedin, Plus } from "lucide-react";
+import Tablero from "@/components/Tablero";
 import { COLOR_ESTADO, EtiquetaEstado } from "@/components/Estado";
 import { leerIdeas } from "@/lib/github";
 import { META } from "@/lib/markdown";
@@ -7,25 +8,38 @@ import { ESTADOS } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+const LINKEDIN = "https://www.linkedin.com/in/briandh5/";
+
 export default async function Inicio() {
   const ideas = await leerIdeas();
   const publicadas = ideas.filter((i) => i.estado === "Publicada").length;
-  const casillas = Array.from({ length: Math.max(META, ideas.length) }, (_, n) => ideas.find((i) => i.numero === n + 1));
 
   return (
     <main className="mx-auto max-w-5xl px-4 pb-32 pt-10 sm:px-6 sm:pt-16">
       <header className="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-tomate">Reto 100 apps</p>
-          <h1 className="mt-2 font-titulo text-5xl font-black leading-none tracking-tight sm:text-7xl">
-            101 great
+          <h1 className="font-titulo text-6xl font-black leading-[0.95] tracking-tight sm:text-8xl">
+            Reto
             <br />
-            ideas
+            101 apps
           </h1>
+          <a
+            href={LINKEDIN}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-block font-firma text-3xl text-tomate transition hover:opacity-80 sm:text-4xl"
+          >
+            By Brian Hawkins
+          </a>
         </div>
-        <Link href="/nueva" className="boton-primario hidden sm:inline-flex">
-          <Plus size={18} /> Nueva idea
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <a href={LINKEDIN} target="_blank" rel="noreferrer" className="boton-secundario">
+            <Linkedin size={17} /> Contact me
+          </a>
+          <Link href="/nueva" className="boton-primario hidden sm:inline-flex">
+            <Plus size={18} /> Nueva idea
+          </Link>
+        </div>
       </header>
 
       <section className="mt-10 rounded-3xl border border-linea bg-hoja p-5 sm:p-7">
@@ -38,15 +52,7 @@ export default async function Inicio() {
             {publicadas} publicadas · {ideas.length} registradas
           </p>
         </div>
-        <div className="mt-5 grid grid-cols-[repeat(20,minmax(0,1fr))] gap-1 sm:gap-1.5" aria-hidden>
-          {casillas.map((idea, n) => (
-            <span
-              key={n}
-              title={idea ? `#${idea.numero} ${idea.nombre}` : `#${n + 1}`}
-              className={`aspect-square rounded-[3px] ${idea ? COLOR_ESTADO[idea.estado] : "bg-linea/70"}`}
-            />
-          ))}
-        </div>
+        <Tablero ideas={ideas} meta={META} />
         <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-tenue">
           {ESTADOS.map((e) => (
             <span key={e} className="inline-flex items-center gap-1.5">
@@ -59,7 +65,9 @@ export default async function Inicio() {
       <ol className="mt-10 grid gap-4">
         {[...ideas].reverse().map((idea) => (
           <li key={idea.numero}>
-            <article className="group relative grid grid-cols-[auto,1fr] gap-x-5 rounded-3xl border border-linea bg-hoja p-5 transition hover:border-tinta/30 sm:gap-x-7 sm:p-6">
+            <article
+              id={`idea-${idea.numero}`}
+              className="group relative grid scroll-mt-24 grid-cols-[auto,1fr] gap-x-5 rounded-3xl border border-linea bg-hoja p-5 transition hover:border-tinta/30 sm:gap-x-7 sm:p-6">
               <span className="font-titulo text-5xl font-black leading-none text-tomate/90 sm:text-6xl">
                 {String(idea.numero).padStart(2, "0")}
               </span>
@@ -86,6 +94,9 @@ export default async function Inicio() {
                         <Github size={15} /> Código
                       </a>
                     )}
+                    <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
+                      <FileText size={15} /> Ficha completa
+                    </Link>
                   </div>
                 )}
               </div>

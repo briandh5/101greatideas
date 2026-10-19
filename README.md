@@ -1,8 +1,10 @@
-# 101 great ideas · Reto 100 apps
+# Reto 101 apps
+
+_By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
-**Avance:** 3 publicadas · 3 registradas · meta 100
+**Avance:** 3 publicadas · 3 registradas · meta 101
 
 | # | App | Qué hace | Stack | Código | En vivo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |

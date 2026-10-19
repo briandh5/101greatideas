@@ -1,6 +1,6 @@
 import type { Detalle, Idea } from "./types";
 
-export const META = 100;
+export const META = 101;
 
 export function slug(texto: string): string {
   return texto
@@ -36,7 +36,9 @@ export function generarReadme(ideas: Idea[], sitio?: string): string {
     })
     .join("\n");
 
-  return `# 101 great ideas · Reto 100 apps
+  return `# Reto 101 apps
+
+_By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
