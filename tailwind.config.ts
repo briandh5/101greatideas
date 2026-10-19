@@ -18,7 +18,7 @@ const config: Config = {
       fontFamily: {
         titulo: ["var(--font-titulo)", "Georgia", "serif"],
         texto: ["var(--font-texto)", "system-ui", "sans-serif"],
-        firma: ["var(--font-firma)", "cursive"],
+        firma: ["var(--font-firma)", "system-ui", "sans-serif"],
       },
     },
   },

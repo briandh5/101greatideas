@@ -27,9 +27,9 @@ export default async function Inicio() {
             href={LINKEDIN}
             target="_blank"
             rel="noreferrer"
-            className="mt-3 inline-block font-firma text-3xl text-tomate transition hover:opacity-80 sm:text-4xl"
+            className="mt-4 inline-block font-firma text-lg font-light tracking-wide text-tenue transition hover:text-tomate sm:text-xl"
           >
-            By Brian Hawkins
+            By <span className="font-medium text-tinta">Brian Hawkins</span>
           </a>
         </div>
         <div className="flex flex-wrap gap-2">

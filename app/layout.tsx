@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter, Pinyon_Script } from "next/font/google";
+import { Fraunces, Inter, Outfit } from "next/font/google";
 import "./globals.css";
 
 const titulo = Fraunces({ subsets: ["latin"], variable: "--font-titulo", weight: ["500", "700", "900"] });
 const texto = Inter({ subsets: ["latin"], variable: "--font-texto" });
-const firma = Pinyon_Script({ subsets: ["latin"], variable: "--font-firma", weight: "400" });
+const firma = Outfit({ subsets: ["latin"], variable: "--font-firma", weight: ["300", "500"] });
 
 export const metadata: Metadata = {
   title: "Reto 101 apps · Brian Hawkins",
