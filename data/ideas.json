@@ -28,5 +28,15 @@
     "enVivo": "https://crecer-two.vercel.app",
     "estado": "Publicada",
     "creada": "2026-10-19"
+  },
+  {
+    "numero": 4,
+    "nombre": "La Previa · Champions",
+    "resumen": "Coordina con tus amigos dónde ver cada partido de la Champions: mapa ilustrado con pines y hashtags, calendario por fases, recordatorios y chat por evento.",
+    "stack": "Next.js 15 · TypeScript · Tailwind · Leaflet · Framer Motion · Lucide · Vercel",
+    "repo": "",
+    "enVivo": "",
+    "estado": "En construcción",
+    "creada": "2026-10-20"
   }
 ]
