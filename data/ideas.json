@@ -34,7 +34,7 @@
     "nombre": "La Previa · Champions",
     "resumen": "Coordina con tus amigos dónde ver cada partido de la Champions: mapa ilustrado con pines y hashtags, calendario por fases, recordatorios y chat por evento.",
     "stack": "Next.js 15 · TypeScript · Tailwind · Leaflet · Framer Motion · Lucide · Vercel",
-    "repo": "",
+    "repo": "https://github.com/briandh5/championsleague",
     "enVivo": "",
     "estado": "En construcción",
     "creada": "2026-10-20"
