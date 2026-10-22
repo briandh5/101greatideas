@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { COLOR_ESTADO, EtiquetaEstado } from "./Estado";
+import { nombreEstado, resumenDe, stackDe, TEXTOS, type Idioma } from "@/lib/i18n";
 import type { Idea } from "@/lib/types";
 
 const COLUMNAS = 20;
@@ -18,7 +19,8 @@ export function irAProyecto(numero: number) {
   window.setTimeout(() => tarjeta.classList.remove("resaltada"), 2600);
 }
 
-export default function Tablero({ ideas, meta }: { ideas: Idea[]; meta: number }) {
+export default function Tablero({ ideas, meta, idioma }: { ideas: Idea[]; meta: number; idioma: Idioma }) {
+  const t = TEXTOS[idioma];
   const [conMouse, setConMouse] = useState(false);
   const [activa, setActiva] = useState<number | null>(null);
   const casillas = Array.from({ length: Math.max(meta, ideas.length) }, (_, n) => ideas.find((i) => i.numero === n + 1));
@@ -47,7 +49,7 @@ export default function Tablero({ ideas, meta }: { ideas: Idea[]; meta: number }
           >
             <button
               type="button"
-              aria-label={`#${idea.numero} ${idea.nombre}, ${idea.estado}. Ir al proyecto`}
+              aria-label={`#${idea.numero} ${idea.nombre}, ${nombreEstado(idea.estado, idioma)}. ${t.irAlProyecto}`}
               onClick={() => {
                 setActiva(null);
                 irAProyecto(idea.numero);
@@ -57,7 +59,7 @@ export default function Tablero({ ideas, meta }: { ideas: Idea[]; meta: number }
               className={`casilla block aspect-square w-full rounded-[3px] ${COLOR_ESTADO[idea.estado]} ${abierta ? "encendida" : ""}`}
               style={{ ["--brillo" as string]: `var(--brillo-${idea.estado === "Publicada" ? "menta" : idea.estado === "Idea" ? "mostaza" : "tomate"})` }}
             />
-            {abierta && <Vista idea={idea} columna={columna} abajo={fila === 0} />}
+            {abierta && <Vista idea={idea} columna={columna} abajo={fila === 0} idioma={idioma} />}
           </div>
         );
       })}
@@ -66,7 +68,8 @@ export default function Tablero({ ideas, meta }: { ideas: Idea[]; meta: number }
 }
 
 /** Tarjeta flotante con datos y una vista previa en vivo del proyecto. */
-function Vista({ idea, columna, abajo }: { idea: Idea; columna: number; abajo: boolean }) {
+function Vista({ idea, columna, abajo, idioma }: { idea: Idea; columna: number; abajo: boolean; idioma: Idioma }) {
+  const t = TEXTOS[idioma];
   const [cargada, setCargada] = useState(false);
   const lado = columna < 6 ? "left-0" : columna > 13 ? "right-0" : "left-1/2 -translate-x-1/2";
   return (
@@ -77,11 +80,11 @@ function Vista({ idea, columna, abajo }: { idea: Idea; columna: number; abajo: b
         {idea.enVivo ? (
           <div className="relative h-[200px] w-80 overflow-hidden border-b border-linea bg-papel">
             {!cargada && (
-              <span className="absolute inset-0 grid place-items-center text-xs text-tenue">Cargando vista previa…</span>
+              <span className="absolute inset-0 grid place-items-center text-xs text-tenue">{t.cargandoVista}</span>
             )}
             <iframe
               src={idea.enVivo}
-              title={`Vista previa de ${idea.nombre}`}
+              title={`${t.vistaPreviaDe} ${idea.nombre}`}
               loading="lazy"
               tabIndex={-1}
               onLoad={() => setCargada(true)}
@@ -90,19 +93,19 @@ function Vista({ idea, columna, abajo }: { idea: Idea; columna: number; abajo: b
             />
           </div>
         ) : (
-          <div className="grid h-24 place-items-center border-b border-linea bg-papel text-xs text-tenue">Aún sin versión en vivo</div>
+          <div className="grid h-24 place-items-center border-b border-linea bg-papel text-xs text-tenue">{t.sinVivo}</div>
         )}
         <div className="p-4">
           <div className="flex items-start justify-between gap-2">
             <p className="font-titulo text-lg font-bold leading-tight">
               <span className="text-tomate">#{idea.numero}</span> {idea.nombre}
             </p>
-            <EtiquetaEstado estado={idea.estado} />
+            <EtiquetaEstado estado={idea.estado} idioma={idioma} />
           </div>
-          <p className="mt-2 line-clamp-3 text-sm text-tenue">{idea.resumen}</p>
-          <p className="mt-2 text-xs text-tenue">{idea.stack}</p>
+          <p className="mt-2 line-clamp-3 text-sm text-tenue">{resumenDe(idea, idioma)}</p>
+          <p className="mt-2 text-xs text-tenue">{stackDe(idea, idioma)}</p>
           <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-tomate">
-            <ArrowDown size={13} /> Clic para ver el proyecto completo
+            <ArrowDown size={13} /> {t.clicProyecto}
           </p>
         </div>
       </div>

@@ -66,4 +66,6 @@ export interface Idea {
   estado: Estado;
   creada: string; // AAAA-MM-DD
   detalle?: Detalle;
+  /** Traducción opcional al inglés para el cambio de idioma de la guía. */
+  en?: { resumen: string; stack?: string };
 }

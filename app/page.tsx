@@ -3,6 +3,8 @@ import { ArrowUpRight, FileText, Github, Linkedin, Plus } from "lucide-react";
 import Tablero from "@/components/Tablero";
 import { COLOR_ESTADO, EtiquetaEstado } from "@/components/Estado";
 import { leerIdeas } from "@/lib/github";
+import { nombreEstado, resumenDe, stackDe, TEXTOS } from "@/lib/i18n";
+import { leerIdioma } from "@/lib/idioma";
 import { META } from "@/lib/markdown";
 import { ESTADOS } from "@/lib/types";
 
@@ -11,7 +13,8 @@ export const dynamic = "force-dynamic";
 const LINKEDIN = "https://www.linkedin.com/in/briandh5/";
 
 export default async function Inicio() {
-  const ideas = await leerIdeas();
+  const [ideas, idioma] = await Promise.all([leerIdeas(), leerIdioma()]);
+  const t = TEXTOS[idioma];
   const publicadas = ideas.filter((i) => i.estado === "Publicada").length;
 
   return (
@@ -19,9 +22,9 @@ export default async function Inicio() {
       <header className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <h1 className="font-titulo text-6xl font-black leading-[0.95] tracking-tight sm:text-8xl">
-            Reto
+            {t.titulo[0]}
             <br />
-            101 apps
+            {t.titulo[1]}
           </h1>
           <a
             href={LINKEDIN}
@@ -34,10 +37,10 @@ export default async function Inicio() {
         </div>
         <div className="flex flex-wrap gap-2">
           <a href={LINKEDIN} target="_blank" rel="noreferrer" className="boton-secundario">
-            <Linkedin size={17} /> Contact me
+            <Linkedin size={17} /> {t.contactMe}
           </a>
           <Link href="/nueva" className="boton-primario hidden sm:inline-flex">
-            <Plus size={18} /> Nueva idea
+            <Plus size={18} /> {t.nuevaIdea}
           </Link>
         </div>
       </header>
@@ -49,14 +52,14 @@ export default async function Inicio() {
             <span className="text-tenue"> / {META}</span>
           </p>
           <p className="text-sm text-tenue">
-            {publicadas} publicadas · {ideas.length} registradas
+            {publicadas} {t.publicadas} · {ideas.length} {t.registradas}
           </p>
         </div>
-        <Tablero ideas={ideas} meta={META} />
+        <Tablero ideas={ideas} meta={META} idioma={idioma} />
         <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-tenue">
           {ESTADOS.map((e) => (
             <span key={e} className="inline-flex items-center gap-1.5">
-              <span className={`h-2 w-2 rounded-sm ${COLOR_ESTADO[e]}`} /> {e}
+              <span className={`h-2 w-2 rounded-sm ${COLOR_ESTADO[e]}`} /> {nombreEstado(e, idioma)}
             </span>
           ))}
         </div>
@@ -78,24 +81,24 @@ export default async function Inicio() {
                       {idea.nombre}
                     </Link>
                   </h2>
-                  <EtiquetaEstado estado={idea.estado} />
+                  <EtiquetaEstado estado={idea.estado} idioma={idioma} />
                 </div>
-                <p className="mt-2 text-tenue">{idea.resumen}</p>
-                <p className="mt-3 text-xs text-tenue">{idea.stack}</p>
+                <p className="mt-2 text-tenue">{resumenDe(idea, idioma)}</p>
+                <p className="mt-3 text-xs text-tenue">{stackDe(idea, idioma)}</p>
                 {(idea.repo || idea.enVivo) && (
                   <div className="relative z-10 mt-4 flex flex-wrap gap-2">
                     {idea.enVivo && (
                       <a href={idea.enVivo} target="_blank" rel="noreferrer" className="boton-secundario px-4 py-2">
-                        Abrir <ArrowUpRight size={15} />
+                        {t.abrir} <ArrowUpRight size={15} />
                       </a>
                     )}
                     {idea.repo && (
                       <a href={idea.repo} target="_blank" rel="noreferrer" className="boton-secundario px-4 py-2">
-                        <Github size={15} /> Código
+                        <Github size={15} /> {t.codigo}
                       </a>
                     )}
                     <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
-                      <FileText size={15} /> Ficha completa
+                      <FileText size={15} /> {t.fichaCompleta}
                     </Link>
                   </div>
                 )}
@@ -105,9 +108,28 @@ export default async function Inicio() {
         ))}
       </ol>
 
+      <section aria-labelledby="sobre-la-guia" className="mt-10 rounded-3xl border border-black/10 bg-white p-6 text-neutral-900 shadow-sm sm:p-8">
+        <h2 id="sobre-la-guia" className="font-firma text-xs font-medium uppercase tracking-[0.2em] text-neutral-500">
+          {t.sobreProyecto}
+        </h2>
+        <div className="mt-4 grid gap-4 font-firma text-base font-light leading-relaxed sm:text-lg">
+          {t.bio.map((parrafo) => (
+            <p key={parrafo}>{parrafo}</p>
+          ))}
+        </div>
+        <a
+          href={LINKEDIN}
+          target="_blank"
+          rel="noreferrer"
+          className="boton mt-6 border border-black/15 bg-white text-neutral-900 hover:border-black/40"
+        >
+          <Linkedin size={17} /> {t.contacto}
+        </a>
+      </section>
+
       <Link
         href="/nueva"
-        aria-label="Nueva idea"
+        aria-label={t.nuevaIdea}
         className="fixed bottom-6 right-6 grid h-16 w-16 place-items-center rounded-full bg-tomate text-white shadow-lg shadow-tomate/30 transition hover:scale-105 sm:bottom-8 sm:right-8"
       >
         <Plus size={30} strokeWidth={2.5} />

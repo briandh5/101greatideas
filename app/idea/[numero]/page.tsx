@@ -6,6 +6,8 @@ import EditarIdea from "@/components/EditarIdea";
 import { EtiquetaEstado } from "@/components/Estado";
 import { PASOS, type Borrador } from "@/lib/formulario";
 import { leerIdeas, puedeGuardar } from "@/lib/github";
+import { resumenDe, stackDe, TEXTOS } from "@/lib/i18n";
+import { leerIdioma } from "@/lib/idioma";
 import { generarFicha } from "@/lib/markdown";
 
 export const dynamic = "force-dynamic";
@@ -16,38 +18,40 @@ export default async function FichaIdea({ params }: { params: Promise<{ numero: 
   const { numero } = await params;
   const idea = (await leerIdeas()).find((i) => i.numero === Number(numero));
   if (!idea) notFound();
+  const idioma = await leerIdioma();
+  const t = TEXTOS[idioma];
   const b = idea.detalle ? ({ ...idea, ...idea.detalle } as Borrador) : null;
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-20 pt-8 sm:px-6 sm:pt-12">
       <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-tenue hover:text-tinta">
-        <ArrowLeft size={15} /> Índice
+        <ArrowLeft size={15} /> {t.indice}
       </Link>
 
       <header className="mt-8">
         <p className="font-titulo text-6xl font-black leading-none text-tomate">{String(idea.numero).padStart(2, "0")}</p>
         <h1 className="mt-3 font-titulo text-4xl font-bold leading-tight sm:text-5xl">{idea.nombre}</h1>
-        <p className="mt-3 text-lg text-tenue">{idea.resumen}</p>
+        <p className="mt-3 text-lg text-tenue">{resumenDe(idea, idioma)}</p>
         <div className="mt-5 flex flex-wrap items-center gap-2">
-          <EtiquetaEstado estado={idea.estado} />
+          <EtiquetaEstado estado={idea.estado} idioma={idioma} />
           {idea.detalle && (
             <span className="rounded-full border border-linea bg-papel px-2.5 py-1 text-xs">{idea.detalle.categoria}</span>
           )}
-          <span className="text-xs text-tenue">Registrada el {idea.creada}</span>
+          <span className="text-xs text-tenue">{t.registradaEl} {idea.creada}</span>
         </div>
-        <p className="mt-4 text-sm text-tenue">{idea.stack}</p>
+        <p className="mt-4 text-sm text-tenue">{stackDe(idea, idioma)}</p>
         <div className="mt-5 flex flex-wrap gap-2">
           {idea.enVivo && (
             <a href={idea.enVivo} target="_blank" rel="noreferrer" className="boton-primario">
-              Abrir la app <ArrowUpRight size={16} />
+              {t.abrirApp} <ArrowUpRight size={16} />
             </a>
           )}
           {idea.repo && (
             <a href={idea.repo} target="_blank" rel="noreferrer" className="boton-secundario">
-              <Github size={16} /> Código
+              <Github size={16} /> {t.codigo}
             </a>
           )}
-          {idea.detalle && <BotonCopiar texto={generarFicha(idea)} etiqueta="Copiar ficha para Claude" />}
+          {idea.detalle && <BotonCopiar texto={generarFicha(idea)} etiqueta={t.copiarFicha} />}
         </div>
       </header>
 
@@ -100,7 +104,7 @@ export default async function FichaIdea({ params }: { params: Promise<{ numero: 
         </div>
       ) : (
         <p className="mt-10 rounded-3xl border border-dashed border-linea p-6 text-tenue">
-          Esta app se registró antes del formulario, así que no tiene ficha detallada.
+          {t.sinFicha}
         </p>
       )}
 
