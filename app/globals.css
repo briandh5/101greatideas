@@ -3,6 +3,22 @@
 @tailwind utilities;
 
 :root {
+  --papel: 22 21 19;
+  --hoja: 33 31 28;
+  --tinta: 240 235 226;
+  --tenue: 160 152 140;
+  --linea: 58 54 49;
+  --tomate: 240 112 76;
+  --menta: 64 196 166;
+  --mostaza: 230 180 70;
+  --brillo-menta: 46 230 180;
+  --brillo-mostaza: 255 200 60;
+  --brillo-tomate: 255 120 80;
+  color-scheme: dark;
+}
+
+/* Modo claro: se activa desde el engrane de ajustes (el oscuro es el de siempre) */
+:root[data-tema="claro"] {
   --papel: 251 247 239;
   --hoja: 255 255 255;
   --tinta: 28 26 23;
@@ -11,24 +27,7 @@
   --tomate: 214 79 42;
   --menta: 22 145 120;
   --mostaza: 196 140 18;
-  --brillo-menta: 46 230 180;
-  --brillo-mostaza: 255 200 60;
-  --brillo-tomate: 255 120 80;
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --papel: 22 21 19;
-    --hoja: 33 31 28;
-    --tinta: 240 235 226;
-    --tenue: 160 152 140;
-    --linea: 58 54 49;
-    --tomate: 240 112 76;
-    --menta: 64 196 166;
-    --mostaza: 230 180 70;
-    color-scheme: dark;
-  }
 }
 
 body {

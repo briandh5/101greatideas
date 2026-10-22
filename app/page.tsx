@@ -37,7 +37,7 @@ export default async function Inicio() {
         </div>
         <div className="flex flex-wrap gap-2">
           <a href={LINKEDIN} target="_blank" rel="noreferrer" className="boton-secundario">
-            <Linkedin size={17} /> {t.contactMe}
+            <Linkedin size={17} /> {t.contacto}
           </a>
           <Link href="/nueva" className="boton-primario hidden sm:inline-flex">
             <Plus size={18} /> {t.nuevaIdea}

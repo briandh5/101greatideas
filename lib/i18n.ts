@@ -3,12 +3,13 @@ import type { Estado, Idea } from "./types";
 export const IDIOMAS = ["es", "en"] as const;
 export type Idioma = (typeof IDIOMAS)[number];
 export const COOKIE_IDIOMA = "101gi-idioma";
+export const COOKIE_TEMA = "101gi-tema";
+export type Tema = "oscuro" | "claro";
 
 export const esIdioma = (v: unknown): v is Idioma => IDIOMAS.includes(v as Idioma);
 
 const ES = {
   titulo: ["Reto", "101 apps"],
-  contactMe: "Contact me",
   nuevaIdea: "Nueva idea",
   publicadas: "publicadas",
   registradas: "registradas",
@@ -23,6 +24,8 @@ const ES = {
   contacto: "Contacto",
   ajustes: "Ajustes",
   idioma: "Idioma",
+  apariencia: "Apariencia",
+  modoClaro: "Modo claro",
   cargandoVista: "Cargando vista previa…",
   sinVivo: "Aún sin versión en vivo",
   clicProyecto: "Clic para ver el proyecto completo",
@@ -37,7 +40,6 @@ const ES = {
 
 const EN: typeof ES = {
   titulo: ["101 apps", "challenge"],
-  contactMe: "Contact me",
   nuevaIdea: "New idea",
   publicadas: "live",
   registradas: "registered",
@@ -52,6 +54,8 @@ const EN: typeof ES = {
   contacto: "Contact",
   ajustes: "Settings",
   idioma: "Language",
+  apariencia: "Appearance",
+  modoClaro: "Light mode",
   cargandoVista: "Loading preview…",
   sinVivo: "No live version yet",
   clicProyecto: "Click to see the full project",
