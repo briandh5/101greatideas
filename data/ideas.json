@@ -48,5 +48,15 @@
     "enVivo": "https://smartpantry-xi.vercel.app/",
     "estado": "Publicada",
     "creada": "2026-10-21"
+  },
+  {
+    "numero": 6,
+    "nombre": "Do you still remember?",
+    "resumen": "Trivia retro estilo arcade de 8 bits con 7 categorías (ciencia, geografía, matemáticas, química, física, arte y bases de secundaria), cronómetro, calificación del 1 al 10, logros y tabla de High Scores.",
+    "stack": "React 19 · Vite · Tailwind · WebAudio · Vercel",
+    "repo": "https://github.com/briandh5/doyouremember",
+    "enVivo": "",
+    "estado": "En construcción",
+    "creada": "2026-10-22"
   }
 ]
