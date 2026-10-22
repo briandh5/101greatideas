@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, Outfit } from "next/font/google";
+import Ajustes from "@/components/Ajustes";
+import { leerIdioma, leerTema } from "@/lib/idioma";
 import "./globals.css";
 
 const titulo = Fraunces({ subsets: ["latin"], variable: "--font-titulo", weight: ["500", "700", "900"] });
@@ -13,10 +15,14 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [idioma, tema] = await Promise.all([leerIdioma(), leerTema()]);
   return (
-    <html lang="es" className={`${titulo.variable} ${texto.variable} ${firma.variable}`}>
-      <body className="min-h-screen font-texto antialiased">{children}</body>
+    <html lang={idioma} data-tema={tema} className={`${titulo.variable} ${texto.variable} ${firma.variable}`}>
+      <body className="min-h-screen font-texto antialiased">
+        <Ajustes idioma={idioma} tema={tema} />
+        {children}
+      </body>
     </html>
   );
 }

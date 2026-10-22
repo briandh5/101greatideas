@@ -7,7 +7,11 @@
     "repo": "https://github.com/briandh5/learningSQL",
     "enVivo": "https://learningsql-zeta.vercel.app/",
     "estado": "Publicada",
-    "creada": "2026-10-19"
+    "creada": "2026-10-19",
+    "en": {
+      "resumen": "A game to learn SQL by building queries from drag-and-drop pieces, with real-time results and hints.",
+      "stack": "React (in-browser Babel) · Tailwind · custom JS SQL engine · Vercel"
+    }
   },
   {
     "numero": 2,
@@ -17,7 +21,10 @@
     "repo": "https://github.com/briandh5/sptroop-asistencia",
     "enVivo": "https://sptroop-asistencia.vercel.app/",
     "estado": "Publicada",
-    "creada": "2026-10-19"
+    "creada": "2026-10-19",
+    "en": {
+      "resumen": "Daily roll call by site and shift, plus a biweekly pre-payroll close exportable to Excel, for a private security company."
+    }
   },
   {
     "numero": 3,
@@ -27,7 +34,10 @@
     "repo": "https://github.com/briandh5/crecer",
     "enVivo": "https://crecer-two.vercel.app",
     "estado": "Publicada",
-    "creada": "2026-10-19"
+    "creada": "2026-10-19",
+    "en": {
+      "resumen": "Child development companion: growth tracking with WHO curves, vaccination record, age milestones and a photo journal."
+    }
   },
   {
     "numero": 4,
@@ -37,7 +47,10 @@
     "repo": "https://github.com/briandh5/championsleague",
     "enVivo": "https://championsleague-coral.vercel.app",
     "estado": "Publicada",
-    "creada": "2026-10-20"
+    "creada": "2026-10-20",
+    "en": {
+      "resumen": "Coordinate with your friends where to watch every Champions League match: illustrated map with pins and hashtags, calendar by stage, reminders, per-event chat and live chat across devices."
+    }
   },
   {
     "numero": 5,
@@ -47,7 +60,10 @@
     "repo": "https://github.com/briandh5/smartPantry",
     "enVivo": "https://smartpantry-xi.vercel.app/",
     "estado": "Publicada",
-    "creada": "2026-10-21"
+    "creada": "2026-10-21",
+    "en": {
+      "resumen": "Swipe-style recipes from what's already in your pantry, nutrition calculated by grams, a smart shopping list with what's missing and an interface that takes its colors from your photos."
+    }
   },
   {
     "numero": 6,
@@ -57,6 +73,9 @@
     "repo": "https://github.com/briandh5/doyouremember",
     "enVivo": "https://doyouremember-kappa.vercel.app/",
     "estado": "Publicada",
-    "creada": "2026-10-22"
+    "creada": "2026-10-22",
+    "en": {
+      "resumen": "Retro 8-bit arcade trivia with 7 categories (science, geography, math, chemistry, physics, art and high-school basics), a timer, 1-to-10 scoring, achievements and a High Scores table."
+    }
   }
 ]
