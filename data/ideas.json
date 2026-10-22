@@ -45,8 +45,8 @@
     "resumen": "Recetas estilo swipe con lo que ya tienes en la despensa, nutrición calculada por gramos, lista de compras inteligente con lo que falta y una interfaz que toma los colores de tus fotos.",
     "stack": "React 19 · Vite · Tailwind · Framer Motion · Lucide · Vercel",
     "repo": "https://github.com/briandh5/smartPantry",
-    "enVivo": "",
-    "estado": "En construcción",
+    "enVivo": "https://smartpantry-xi.vercel.app/",
+    "estado": "Publicada",
     "creada": "2026-10-21"
   }
 ]

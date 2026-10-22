@@ -4,7 +4,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
-**Avance:** 4 publicadas · 5 registradas · meta 101
+**Avance:** 5 publicadas · 5 registradas · meta 101
 
 | # | App | Qué hace | Stack | Código | En vivo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 | 2 | SP Troop · Asistencia y Pre-nómina | Pase de lista diario por servicio y turno, y cierre de pre-nómina quincenal exportable a Excel para una empresa de seguridad privada. | Next.js 15 · TypeScript · Tailwind · ExcelJS · Vercel | [briandh5/sptroop-asistencia](https://github.com/briandh5/sptroop-asistencia) | [sptroop-asistencia.vercel.app](https://sptroop-asistencia.vercel.app/) | Publicada |
 | 3 | Crecer | Acompañamiento del desarrollo infantil: crecimiento con curvas OMS, cartilla de vacunas, hitos por edad y diario con fotos. | Next.js 15 · TypeScript · Tailwind · Recharts · PostgreSQL (Supabase) · Vercel | [briandh5/crecer](https://github.com/briandh5/crecer) | [crecer-two.vercel.app](https://crecer-two.vercel.app) | Publicada |
 | 4 | La Previa · Champions | Coordina con tus amigos dónde ver cada partido de la Champions: mapa ilustrado con pines y hashtags, calendario por fases, recordatorios, chat por evento y chat en vivo entre dispositivos. | Next.js 15 · TypeScript · Tailwind · SVG (d3-geo) · Supabase Realtime · Framer Motion · Lucide · Vercel | [briandh5/championsleague](https://github.com/briandh5/championsleague) | [championsleague-coral.vercel.app](https://championsleague-coral.vercel.app) | Publicada |
-| 5 | Smart Pantry & Chef | Recetas estilo swipe con lo que ya tienes en la despensa, nutrición calculada por gramos, lista de compras inteligente con lo que falta y una interfaz que toma los colores de tus fotos. | React 19 · Vite · Tailwind · Framer Motion · Lucide · Vercel | [briandh5/smartPantry](https://github.com/briandh5/smartPantry) | — | En construcción |
+| 5 | Smart Pantry & Chef | Recetas estilo swipe con lo que ya tienes en la despensa, nutrición calculada por gramos, lista de compras inteligente con lo que falta y una interfaz que toma los colores de tus fotos. | React 19 · Vite · Tailwind · Framer Motion · Lucide · Vercel | [briandh5/smartPantry](https://github.com/briandh5/smartPantry) | [smartpantry-xi.vercel.app](https://smartpantry-xi.vercel.app/) | Publicada |
 
 Las ideas con enlace en el nombre tienen su ficha completa en la carpeta [`ideas/`](ideas/).
 
