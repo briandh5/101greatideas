@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import { BotonCopiar } from "@/components/Asistente";
 import EditarIdea from "@/components/EditarIdea";
+import Presentacion from "@/components/Presentacion";
 import { EtiquetaEstado } from "@/components/Estado";
 import { PASOS, type Borrador } from "@/lib/formulario";
 import { leerIdeas, puedeGuardar } from "@/lib/github";
@@ -50,6 +51,9 @@ export default async function FichaIdea({ params }: { params: Promise<{ numero: 
             <a href={idea.repo} target="_blank" rel="noreferrer" className="boton-secundario">
               <Github size={16} /> {t.codigo}
             </a>
+          )}
+          {!!idea.presentacion?.length && (
+            <Presentacion slides={idea.presentacion} titulo={idea.nombre} idioma={idioma} className="boton-secundario" />
           )}
           {idea.detalle && <BotonCopiar texto={generarFicha(idea)} etiqueta={t.copiarFicha} />}
         </div>

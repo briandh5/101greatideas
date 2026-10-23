@@ -101,6 +101,21 @@
     "creada": "2026-10-23",
     "en": {
       "resumen": "Augmented reality proposal for the Google ecosystem: point your camera at a building and a Maps-style card appears to get directions, visit its website, buy tickets, book restaurants and movies or share photos instantly."
-    }
+    },
+    "enVivo": "",
+    "presentacion": [
+      "/presentaciones/mira-ar/01.webp",
+      "/presentaciones/mira-ar/02.webp",
+      "/presentaciones/mira-ar/03.webp",
+      "/presentaciones/mira-ar/04.webp",
+      "/presentaciones/mira-ar/05.webp",
+      "/presentaciones/mira-ar/06.webp",
+      "/presentaciones/mira-ar/07.webp",
+      "/presentaciones/mira-ar/08.webp",
+      "/presentaciones/mira-ar/09.webp",
+      "/presentaciones/mira-ar/10.webp",
+      "/presentaciones/mira-ar/11.webp",
+      "/presentaciones/mira-ar/12.webp"
+    ]
   }
 ]
