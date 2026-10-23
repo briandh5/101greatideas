@@ -97,12 +97,12 @@
     "resumen": "Propuesta de realidad aumentada para el ecosistema de Google: señalas un edificio con la cámara y aparece su ficha estilo Maps para llegar, ver su sitio web, comprar boletos, reservar en restaurantes y cines o compartir fotos al instante.",
     "stack": "React 19 · Vite · Tailwind · Vercel",
     "repo": "https://github.com/briandh5/arrealidad",
-    "estado": "En construcción",
+    "estado": "Publicada",
     "creada": "2026-10-23",
     "en": {
       "resumen": "Augmented reality proposal for the Google ecosystem: point your camera at a building and a Maps-style card appears to get directions, visit its website, buy tickets, book restaurants and movies or share photos instantly."
     },
-    "enVivo": "",
+    "enVivo": "https://arrealidad.vercel.app/",
     "presentacion": [
       "/presentaciones/mira-ar/01.webp",
       "/presentaciones/mira-ar/02.webp",
