@@ -36,6 +36,12 @@ const ES = {
   abrirApp: "Abrir la app",
   copiarFicha: "Copiar ficha para Claude",
   sinFicha: "Esta app se registró antes del formulario, así que no tiene ficha detallada.",
+  verPresentacion: "Ver presentación",
+  presentacion: "Presentación",
+  cerrar: "Cerrar",
+  anterior: "Slide anterior",
+  siguiente: "Slide siguiente",
+  de: "de",
 };
 
 const EN: typeof ES = {
@@ -66,6 +72,12 @@ const EN: typeof ES = {
   abrirApp: "Open the app",
   copiarFicha: "Copy sheet for Claude",
   sinFicha: "This app was registered before the form existed, so it has no detailed sheet.",
+  verPresentacion: "View slides",
+  presentacion: "Slides",
+  cerrar: "Close",
+  anterior: "Previous slide",
+  siguiente: "Next slide",
+  de: "of",
 };
 
 export type Textos = typeof ES;

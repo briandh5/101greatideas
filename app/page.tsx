@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, FileText, Github, Linkedin, Plus } from "lucide-react";
+import Presentacion from "@/components/Presentacion";
 import Tablero from "@/components/Tablero";
 import { COLOR_ESTADO, EtiquetaEstado } from "@/components/Estado";
 import { leerIdeas } from "@/lib/github";
@@ -85,7 +86,7 @@ export default async function Inicio() {
                 </div>
                 <p className="mt-2 text-tenue">{resumenDe(idea, idioma)}</p>
                 <p className="mt-3 text-xs text-tenue">{stackDe(idea, idioma)}</p>
-                {(idea.repo || idea.enVivo) && (
+                {(idea.repo || idea.enVivo || idea.presentacion?.length) && (
                   <div className="relative z-10 mt-4 flex flex-wrap gap-2">
                     {idea.enVivo && (
                       <a href={idea.enVivo} target="_blank" rel="noreferrer" className="boton-secundario px-4 py-2">
@@ -96,6 +97,9 @@ export default async function Inicio() {
                       <a href={idea.repo} target="_blank" rel="noreferrer" className="boton-secundario px-4 py-2">
                         <Github size={15} /> {t.codigo}
                       </a>
+                    )}
+                    {!!idea.presentacion?.length && (
+                      <Presentacion slides={idea.presentacion} titulo={idea.nombre} idioma={idioma} />
                     )}
                     <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
                       <FileText size={15} /> {t.fichaCompleta}
