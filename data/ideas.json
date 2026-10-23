@@ -77,5 +77,18 @@
     "en": {
       "resumen": "Retro 8-bit arcade trivia with 7 categories (science, geography, math, chemistry, physics, art and high-school basics), a timer, 1-to-10 scoring, achievements and a High Scores table."
     }
+  },
+  {
+    "numero": 7,
+    "nombre": "Bosque de Niebla · Xalapa",
+    "resumen": "Dashboard del microclima del bosque de niebla de Xalapa con datos reales (ERA5 y NASA POWER): mapa de calor de anomalías térmicas, lluvia vs. niebla, lluvias extremas y un modo aprendizaje que explica cada gráfica con Pandas y NumPy. Promueve al INECOL.",
+    "stack": "React 19 · Vite · Tailwind · Recharts · Vercel",
+    "repo": "https://github.com/briandh5/bosquedeniebla",
+    "enVivo": "",
+    "estado": "En construcción",
+    "creada": "2026-10-23",
+    "en": {
+      "resumen": "Microclimate dashboard for the Xalapa cloud forest with real data (ERA5 and NASA POWER): a heat map of temperature anomalies, rain vs. fog, extreme rainfall and a learning mode that explains every chart with Pandas and NumPy. Promotes INECOL."
+    }
   }
 ]
