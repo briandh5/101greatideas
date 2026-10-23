@@ -4,7 +4,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
-**Avance:** 6 publicadas · 6 registradas · meta 101
+**Avance:** 6 publicadas · 7 registradas · meta 101
 
 | # | App | Qué hace | Stack | Código | En vivo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -14,6 +14,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 | 4 | La Previa · Champions | Coordina con tus amigos dónde ver cada partido de la Champions: mapa ilustrado con pines y hashtags, calendario por fases, recordatorios, chat por evento y chat en vivo entre dispositivos. | Next.js 15 · TypeScript · Tailwind · SVG (d3-geo) · Supabase Realtime · Framer Motion · Lucide · Vercel | [briandh5/championsleague](https://github.com/briandh5/championsleague) | [championsleague-coral.vercel.app](https://championsleague-coral.vercel.app) | Publicada |
 | 5 | Smart Pantry & Chef | Recetas estilo swipe con lo que ya tienes en la despensa, nutrición calculada por gramos, lista de compras inteligente con lo que falta y una interfaz que toma los colores de tus fotos. | React 19 · Vite · Tailwind · Framer Motion · Lucide · Vercel | [briandh5/smartPantry](https://github.com/briandh5/smartPantry) | [smartpantry-xi.vercel.app](https://smartpantry-xi.vercel.app/) | Publicada |
 | 6 | Do you still remember? | Trivia retro estilo arcade de 8 bits con 7 categorías (ciencia, geografía, matemáticas, química, física, arte y bases de secundaria), cronómetro, calificación del 1 al 10, logros y tabla de High Scores. | React 19 · Vite · Tailwind · WebAudio · Vercel | [briandh5/doyouremember](https://github.com/briandh5/doyouremember) | [doyouremember-kappa.vercel.app](https://doyouremember-kappa.vercel.app/) | Publicada |
+| 7 | Bosque de Niebla · Xalapa | Dashboard del microclima del bosque de niebla de Xalapa con datos reales (ERA5 y NASA POWER): mapa de calor de anomalías térmicas, lluvia vs. niebla, lluvias extremas y un modo aprendizaje que explica cada gráfica con Pandas y NumPy. Promueve al INECOL. | React 19 · Vite · Tailwind · Recharts · Vercel | [briandh5/bosquedeniebla](https://github.com/briandh5/bosquedeniebla) | — | En construcción |
 
 Las ideas con enlace en el nombre tienen su ficha completa en la carpeta [`ideas/`](ideas/).
 
