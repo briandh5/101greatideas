@@ -117,5 +117,17 @@
       "/presentaciones/mira-ar/11.webp",
       "/presentaciones/mira-ar/12.webp"
     ]
+  },
+  {
+    "numero": 10,
+    "nombre": "Dark Theme DJ Mixer",
+    "resumen": "Mezcladora DJ en el navegador con estética de hardware: dos decks con Play/Cue, jog y tempo, EQ, crossfader, buscador de canciones de Audius, sampler de 8 pads sintetizados (y con tus propios audios) y un fondo de luces neón que pulsa con el BPM detectado.",
+    "stack": "React 19 · Vite · Tailwind · Web Audio API · Audius API · Vercel",
+    "repo": "https://github.com/briandh5/djmixer",
+    "estado": "En construcción",
+    "creada": "2026-10-29",
+    "en": {
+      "resumen": "In-browser DJ mixer styled like pro hardware: two decks with Play/Cue, jog and tempo, EQ, crossfader, Audius song search, an 8-pad sampler with synthesized sounds (or your own clips) and a neon light show that pulses to the detected BPM."
+    }
   }
 ]
