@@ -119,6 +119,18 @@
     ]
   },
   {
+    "numero": 9,
+    "nombre": "Every Scroll Is a Delay",
+    "resumen": "Temporizador matutino anti-procrastinación con un feed tipo Instagram: cada post que pasas resta un minuto, baja el porcentaje de tu mañana en un reloj de arena y muestra un mensaje de retrospección. El tiempo nunca se detiene y, al llegar a cero, cuenta cuánto vas tarde.",
+    "stack": "React 19 · Vite · Tailwind · Framer Motion · Vercel",
+    "repo": "https://github.com/briandh5/scrollcastination",
+    "estado": "En construcción",
+    "creada": "2026-10-26",
+    "en": {
+      "resumen": "Anti-procrastination morning timer built around an Instagram-style feed: every post you scroll past costs a minute, drains the percentage of your morning in an hourglass and shows a reflection message. Time never stops and, once it hits zero, it counts how late you are."
+    }
+  },
+  {
     "numero": 10,
     "nombre": "Dark Theme DJ Mixer",
     "resumen": "Mezcladora DJ en el navegador con estética de hardware: dos decks con Play/Cue, jog y tempo, EQ, crossfader, buscador de canciones de Audius, sampler de 8 pads sintetizados (y con tus propios audios) y un fondo de luces neón que pulsa con el BPM detectado.",
