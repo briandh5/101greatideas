@@ -4,7 +4,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
-**Avance:** 8 publicadas · 8 registradas · meta 101
+**Avance:** 8 publicadas · 9 registradas · meta 101
 
 | # | App | Qué hace | Stack | Código | En vivo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -16,6 +16,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 | 6 | Do you still remember? | Trivia retro estilo arcade de 8 bits con 7 categorías (ciencia, geografía, matemáticas, química, física, arte y bases de secundaria), cronómetro, calificación del 1 al 10, logros y tabla de High Scores. | React 19 · Vite · Tailwind · WebAudio · Vercel | [briandh5/doyouremember](https://github.com/briandh5/doyouremember) | [doyouremember-kappa.vercel.app](https://doyouremember-kappa.vercel.app/) | Publicada |
 | 7 | Bosque de Niebla · Xalapa | Dashboard del microclima del bosque de niebla de Xalapa con datos reales (ERA5 y NASA POWER): mapa de calor de anomalías térmicas, lluvia vs. niebla, lluvias extremas y un modo aprendizaje que explica cada gráfica con Pandas y NumPy. Promueve al INECOL. | React 19 · Vite · Tailwind · Recharts · Vercel | [briandh5/bosquedeniebla](https://github.com/briandh5/bosquedeniebla) | [bosquedeniebla.vercel.app](https://bosquedeniebla.vercel.app/) | Publicada |
 | 8 | Mira AR | Propuesta de realidad aumentada para el ecosistema de Google: señalas un edificio con la cámara y aparece su ficha estilo Maps para llegar, ver su sitio web, comprar boletos, reservar en restaurantes y cines o compartir fotos al instante. | React 19 · Vite · Tailwind · Vercel | [briandh5/arrealidad](https://github.com/briandh5/arrealidad) | [arrealidad.vercel.app](https://arrealidad.vercel.app/) | Publicada |
+| 10 | Dark Theme DJ Mixer | Mezcladora DJ en el navegador con estética de hardware: dos decks con Play/Cue, jog y tempo, EQ, crossfader, buscador de canciones de Audius, sampler de 8 pads sintetizados (y con tus propios audios) y un fondo de luces neón que pulsa con el BPM detectado. | React 19 · Vite · Tailwind · Web Audio API · Audius API · Vercel | [briandh5/djmixer](https://github.com/briandh5/djmixer) | — | En construcción |
 
 Las ideas con enlace en el nombre tienen su ficha completa en la carpeta [`ideas/`](ideas/).
 
