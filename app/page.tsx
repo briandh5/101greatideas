@@ -125,7 +125,7 @@ export default async function Inicio() {
           href={LINKEDIN}
           target="_blank"
           rel="noreferrer"
-          className="boton mt-6 border border-black/15 bg-white text-neutral-900 hover:border-black/40"
+          className="boton mx-auto mt-8 flex w-full max-w-xs border-2 border-neutral-900 bg-white text-neutral-900 hover:bg-neutral-900 hover:text-white"
         >
           <Linkedin size={17} /> {t.contacto}
         </a>
