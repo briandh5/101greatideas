@@ -68,4 +68,6 @@ export interface Idea {
   detalle?: Detalle;
   /** Traducción opcional al inglés para el cambio de idioma de la guía. */
   en?: { resumen: string; stack?: string };
+  /** Slides de la app como imágenes en /public, en orden; se ven en una ventana emergente. */
+  presentacion?: string[];
 }
