@@ -143,5 +143,16 @@
       "resumen": "In-browser DJ mixer styled like pro hardware: two decks with Play/Cue, jog and tempo, EQ, crossfader, Audius song search, an 8-pad sampler with synthesized sounds (or your own clips) and a neon light show that pulses to the detected BPM."
     },
     "enVivo": "https://djmixer-tau.vercel.app/"
+  },
+  {
+    "numero": 12,
+    "nombre": "Aegis AI Safety Dashboard",
+    "resumen": "Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción.",
+    "stack": "React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel",
+    "estado": "En construcción",
+    "creada": "2026-11-03",
+    "en": {
+      "resumen": "LLM observability dashboard with jailbreak prevention, interactive charts and production-grade accessible components."
+    }
   }
 ]
