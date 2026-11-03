@@ -143,5 +143,16 @@
       "resumen": "In-browser DJ mixer styled like pro hardware: two decks with Play/Cue, jog and tempo, EQ, crossfader, Audius song search, an 8-pad sampler with synthesized sounds (or your own clips) and a neon light show that pulses to the detected BPM."
     },
     "enVivo": "https://djmixer-tau.vercel.app/"
+  },
+  {
+    "numero": 13,
+    "nombre": "Atlas Muscular",
+    "resumen": "Lámina interactiva de anatomía con estética de enciclopedia y líneas finas: vista anterior y posterior del cuerpo con 16 grupos musculares. Al pasar el cursor, el músculo se dibuja en color de acento y aparece una ficha con su función y de 3 a 5 ejercicios para trabajarlo.",
+    "estado": "En construcción",
+    "stack": "React 19 · Vite · Tailwind · Framer Motion · SVG",
+    "creada": "2026-11-03",
+    "en": {
+      "resumen": "Interactive anatomy plate with a fine-line, encyclopedia look: front and back views of the body with 16 muscle groups. Hover a muscle and its outline draws itself in the accent color while a card shows what it does and 3 to 5 exercises to train it."
+    }
   }
 ]
