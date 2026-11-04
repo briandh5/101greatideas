@@ -145,7 +145,19 @@
     "enVivo": "https://djmixer-tau.vercel.app/"
   },
   {
-    "numero": 13,
+    "numero": 11,
+    "nombre": "Aegis AI Safety Dashboard",
+    "resumen": "Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción.",
+    "stack": "React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel",
+    "repo": "https://github.com/briandh5/aegis",
+    "estado": "En construcción",
+    "creada": "2026-11-03",
+    "en": {
+      "resumen": "LLM observability dashboard with jailbreak prevention, interactive charts and production-grade accessible components."
+    }
+  },
+  {
+    "numero": 12,
     "nombre": "Atlas Muscular",
     "resumen": "Lámina interactiva de anatomía estilo atlas: un écorché realista en vista anterior y posterior con 16 grupos musculares. Al pasar el cursor, el músculo se ilumina y aparece una ficha con su función y de 3 a 5 ejercicios para trabajarlo.",
     "estado": "Publicada",
@@ -158,7 +170,7 @@
     "enVivo": "https://atlasmuscular.vercel.app/"
   },
   {
-    "numero": 14,
+    "numero": 13,
     "nombre": "Therapeutic StoryWeaver",
     "resumen": "App interactiva de cuentos ilustrados con perfiles por edad y paneles de intervención clínica para terapeutas. Tres cuentos (niños, adolescentes, adultos) pintados en el navegador con pinceladas al estilo Van Gogh; cada escena abre preguntas de reflexión, la metáfora clave y una dinámica sugerida.",
     "estado": "En construcción",
