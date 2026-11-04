@@ -156,5 +156,16 @@
     },
     "repo": "https://github.com/briandh5/atlasmuscular",
     "enVivo": "https://atlasmuscular.vercel.app/"
+  },
+  {
+    "numero": 14,
+    "nombre": "Therapeutic StoryWeaver",
+    "resumen": "App interactiva de cuentos ilustrados con perfiles por edad y paneles de intervención clínica para terapeutas. Tres cuentos (niños, adolescentes, adultos) pintados en el navegador con pinceladas al estilo Van Gogh; cada escena abre preguntas de reflexión, la metáfora clave y una dinámica sugerida.",
+    "estado": "En construcción",
+    "stack": "React 19 · Vite · Tailwind · Framer Motion · Canvas",
+    "creada": "2026-11-04",
+    "en": {
+      "resumen": "Interactive illustrated story app with age-based profiles and clinical intervention panels for therapists. Three stories (children, teens, adults) painted in the browser with Van Gogh-style brushstrokes; each scene opens reflection questions, the key metaphor and a suggested exercise."
+    }
   }
 ]
