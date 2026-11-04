@@ -149,6 +149,7 @@
     "nombre": "Aegis AI Safety Dashboard",
     "resumen": "Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción.",
     "stack": "React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel",
+    "repo": "https://github.com/briandh5/aegis",
     "estado": "En construcción",
     "creada": "2026-11-03",
     "en": {
