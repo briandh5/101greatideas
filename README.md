@@ -4,7 +4,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
-**Avance:** 11 publicadas · 13 registradas · meta 101
+**Avance:** 12 publicadas · 13 registradas · meta 101
 
 | # | App | Qué hace | Stack | Código | En vivo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -18,7 +18,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 | 8 | Mira AR | Propuesta de realidad aumentada para el ecosistema de Google: señalas un edificio con la cámara y aparece su ficha estilo Maps para llegar, ver su sitio web, comprar boletos, reservar en restaurantes y cines o compartir fotos al instante. | React 19 · Vite · Tailwind · Vercel | [briandh5/arrealidad](https://github.com/briandh5/arrealidad) | [arrealidad.vercel.app](https://arrealidad.vercel.app/) | Publicada |
 | 9 | Every Scroll Is a Delay | Temporizador matutino anti-procrastinación con un feed tipo Instagram: cada post que pasas resta un minuto, baja el porcentaje de tu mañana en un reloj de arena y muestra un mensaje de retrospección. El tiempo nunca se detiene y, al llegar a cero, cuenta cuánto vas tarde. | React 19 · Vite · Tailwind · Framer Motion · Vercel | [briandh5/scrollcastination](https://github.com/briandh5/scrollcastination) | [scrollcastination.vercel.app](https://scrollcastination.vercel.app/) | Publicada |
 | 10 | Dark Theme DJ Mixer | Mezcladora DJ en el navegador con estética de hardware: dos decks con Play/Cue, jog y tempo, EQ, crossfader, buscador de canciones de Audius, sampler de 8 pads sintetizados (y con tus propios audios) y un fondo de luces neón que pulsa con el BPM detectado. | React 19 · Vite · Tailwind · Web Audio API · Audius API · Vercel | [briandh5/djmixer](https://github.com/briandh5/djmixer) | [djmixer-tau.vercel.app](https://djmixer-tau.vercel.app/) | Publicada |
-| 11 | Aegis AI Safety Dashboard | Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción. | React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel | [briandh5/aegis](https://github.com/briandh5/aegis) | — | En construcción |
+| 11 | Aegis AI Safety Dashboard | Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción. | React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel | [briandh5/aegis](https://github.com/briandh5/aegis) | [aegis-iota-kohl.vercel.app](https://aegis-iota-kohl.vercel.app/) | Publicada |
 | 12 | Atlas Muscular | Lámina interactiva de anatomía estilo atlas: un écorché realista en vista anterior y posterior con 16 grupos musculares. Al pasar el cursor, el músculo se ilumina y aparece una ficha con su función y de 3 a 5 ejercicios para trabajarlo. | React 19 · Vite · Tailwind · Framer Motion · SVG | [briandh5/atlasmuscular](https://github.com/briandh5/atlasmuscular) | [atlasmuscular.vercel.app](https://atlasmuscular.vercel.app/) | Publicada |
 | 13 | Therapeutic StoryWeaver | App interactiva de cuentos ilustrados con perfiles por edad y paneles de intervención clínica para terapeutas. Tres cuentos (niños, adolescentes, adultos) pintados en el navegador con pinceladas al estilo Van Gogh; cada escena abre preguntas de reflexión, la metáfora clave y una dinámica sugerida. | React 19 · Vite · Tailwind · Framer Motion · Canvas | — | — | En construcción |
 
