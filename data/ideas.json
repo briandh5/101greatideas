@@ -150,10 +150,11 @@
     "resumen": "Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción.",
     "stack": "React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel",
     "repo": "https://github.com/briandh5/aegis",
-    "estado": "En construcción",
+    "estado": "Publicada",
     "creada": "2026-11-03",
     "en": {
       "resumen": "LLM observability dashboard with jailbreak prevention, interactive charts and production-grade accessible components."
-    }
+    },
+    "enVivo": "https://aegis-iota-kohl.vercel.app/"
   }
 ]
