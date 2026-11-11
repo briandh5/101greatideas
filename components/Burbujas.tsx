@@ -1,0 +1,322 @@
+"use client";
+
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, FileText, Github, X } from "lucide-react";
+import Presentacion from "./Presentacion";
+import { EtiquetaEstado } from "./Estado";
+import { resumenDe, stackDe, TEXTOS, type Idioma } from "@/lib/i18n";
+import type { Idea } from "@/lib/types";
+
+/** Estado físico de cada burbuja: posición, velocidad, radio y si está reventada. */
+interface Cuerpo {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  r: number;
+  reventada: boolean;
+}
+
+interface Gota {
+  id: number;
+  x: number;
+  y: number;
+  color: string;
+  piezas: { dx: number; dy: number; tam: number }[];
+}
+
+// Cada burbuja tiene su propio tono para que el conjunto se vea iridiscente
+const tono = (n: number, total: number) => Math.round((n * 360) / Math.max(total, 1) + 190) % 360;
+
+/** Rapidez objetivo en px/s: ni tan calmada ni frenética. */
+const RAPIDEZ = [70, 125] as const;
+
+/**
+ * Protector de pantalla de burbujas: una por proyecto, rebotan entre ellas y contra
+ * las orillas. Al tocar una, revienta y abre la ficha del proyecto en un pop up.
+ */
+export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idioma }) {
+  const t = TEXTOS[idioma];
+  const arena = useRef<HTMLDivElement>(null);
+  const nodos = useRef<(HTMLButtonElement | null)[]>([]);
+  const cuerpos = useRef<Cuerpo[]>([]);
+  const [listo, setListo] = useState(false);
+  const [abierta, setAbierta] = useState<number | null>(null);
+  const [fase, setFase] = useState<Record<number, "reventando" | "inflando">>({});
+  const [gotas, setGotas] = useState<Gota[]>([]);
+
+  // Coloca las burbujas sin encimarse, con radio según el tamaño de la pantalla
+  useLayoutEffect(() => {
+    const caja = arena.current;
+    if (!caja) return;
+    const { width: W, height: H } = caja.getBoundingClientRect();
+    const base = Math.min(88, Math.max(36, Math.sqrt((W * H * 0.3) / (ideas.length * Math.PI))));
+    const lentitud = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0.25 : 1;
+    const lista: Cuerpo[] = [];
+    ideas.forEach(() => {
+      const r = base * (0.86 + Math.random() * 0.28);
+      let x = 0;
+      let y = 0;
+      for (let intento = 0; intento < 200; intento++) {
+        x = r + Math.random() * Math.max(1, W - 2 * r);
+        y = r + Math.random() * Math.max(1, H - 2 * r);
+        if (lista.every((o) => Math.hypot(o.x - x, o.y - y) > o.r + r + 4)) break;
+      }
+      const angulo = Math.random() * Math.PI * 2;
+      const v = (RAPIDEZ[0] + Math.random() * (RAPIDEZ[1] - RAPIDEZ[0])) * lentitud;
+      lista.push({ x, y, r, vx: Math.cos(angulo) * v, vy: Math.sin(angulo) * v, reventada: false });
+    });
+    cuerpos.current = lista;
+    setListo(true);
+  }, [ideas]);
+
+  // Bucle de animación: mueve, rebota y pinta con transform (sin re-render de React)
+  useEffect(() => {
+    if (!listo) return;
+    const caja = arena.current!;
+    let W = caja.clientWidth;
+    let H = caja.clientHeight;
+    const medir = () => {
+      W = caja.clientWidth;
+      H = caja.clientHeight;
+    };
+    const obs = new ResizeObserver(medir);
+    obs.observe(caja);
+
+    let anterior = performance.now();
+    let cuadro = 0;
+    const paso = (ahora: number) => {
+      const dt = Math.min(0.05, (ahora - anterior) / 1000); // si la pestaña estuvo oculta, no salta
+      anterior = ahora;
+      const cs = cuerpos.current;
+
+      for (const c of cs) {
+        if (c.reventada) continue;
+        c.x += c.vx * dt;
+        c.y += c.vy * dt;
+        if (c.x < c.r) { c.x = c.r; c.vx = Math.abs(c.vx); }
+        if (c.x > W - c.r) { c.x = W - c.r; c.vx = -Math.abs(c.vx); }
+        if (c.y < c.r) { c.y = c.r; c.vy = Math.abs(c.vy); }
+        if (c.y > H - c.r) { c.y = H - c.r; c.vy = -Math.abs(c.vy); }
+      }
+
+      // Choques elásticos entre burbujas (masa proporcional al área)
+      for (let i = 0; i < cs.length; i++) {
+        const a = cs[i];
+        if (a.reventada) continue;
+        for (let j = i + 1; j < cs.length; j++) {
+          const b = cs[j];
+          if (b.reventada) continue;
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.hypot(dx, dy) || 0.001;
+          const minimo = a.r + b.r;
+          if (dist >= minimo) continue;
+          const nx = dx / dist;
+          const ny = dy / dist;
+          const ma = a.r * a.r;
+          const mb = b.r * b.r;
+          // separa para que no se queden pegadas
+          const encimado = minimo - dist;
+          a.x -= nx * encimado * (mb / (ma + mb));
+          a.y -= ny * encimado * (mb / (ma + mb));
+          b.x += nx * encimado * (ma / (ma + mb));
+          b.y += ny * encimado * (ma / (ma + mb));
+          const rel = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+          if (rel <= 0) continue;
+          const impulso = (2 * rel) / (ma + mb);
+          a.vx -= impulso * mb * nx;
+          a.vy -= impulso * mb * ny;
+          b.vx += impulso * ma * nx;
+          b.vy += impulso * ma * ny;
+        }
+      }
+
+      cs.forEach((c, i) => {
+        // mantiene una rapidez agradable: ni se detienen ni se aceleran de más
+        const v = Math.hypot(c.vx, c.vy) || 1;
+        const objetivo = Math.min(Math.max(v, RAPIDEZ[0] * 0.6), RAPIDEZ[1] * 1.2);
+        c.vx *= 1 + ((objetivo - v) / v) * 0.05;
+        c.vy *= 1 + ((objetivo - v) / v) * 0.05;
+        const nodo = nodos.current[i];
+        if (nodo) nodo.style.transform = `translate3d(${c.x - c.r}px, ${c.y - c.r}px, 0)`;
+      });
+      cuadro = requestAnimationFrame(paso);
+    };
+    cuadro = requestAnimationFrame(paso);
+    return () => {
+      cancelAnimationFrame(cuadro);
+      obs.disconnect();
+    };
+  }, [listo]);
+
+  const reventar = useCallback(
+    (i: number) => {
+      const c = cuerpos.current[i];
+      if (!c || c.reventada) return;
+      c.reventada = true;
+      setFase((f) => ({ ...f, [i]: "reventando" }));
+      const piezas = Array.from({ length: 16 }, (_, k) => {
+        const ang = (k / 16) * Math.PI * 2 + Math.random() * 0.3;
+        const dist = c.r * (1.1 + Math.random() * 0.7);
+        return { dx: Math.cos(ang) * dist, dy: Math.sin(ang) * dist, tam: 3 + Math.random() * 5 };
+      });
+      const id = Date.now() + i;
+      setGotas((g) => [...g, { id, x: c.x, y: c.y, color: `hsl(${tono(i, ideas.length)} 90% 75%)`, piezas }]);
+      window.setTimeout(() => setGotas((g) => g.filter((x) => x.id !== id)), 700);
+      window.setTimeout(() => setAbierta(i), 260);
+    },
+    [ideas.length],
+  );
+
+  // Al cerrar la ficha, la burbuja vuelve a inflarse donde estaba y sigue rebotando
+  const cerrar = useCallback(() => {
+    if (abierta === null) return;
+    const i = abierta;
+    setAbierta(null);
+    const c = cuerpos.current[i];
+    if (c) c.reventada = false;
+    setFase((f) => ({ ...f, [i]: "inflando" }));
+    window.setTimeout(
+      () =>
+        setFase((f) => {
+          const { [i]: _, ...resto } = f;
+          return resto;
+        }),
+      450,
+    );
+  }, [abierta]);
+
+  useEffect(() => {
+    if (abierta === null) return;
+    const tecla = (e: KeyboardEvent) => e.key === "Escape" && cerrar();
+    window.addEventListener("keydown", tecla);
+    return () => window.removeEventListener("keydown", tecla);
+  }, [abierta, cerrar]);
+
+  const idea = abierta !== null ? ideas[abierta] : null;
+
+  return (
+    <section className="flex h-[100svh] flex-col overflow-hidden">
+      <div className="shrink-0 px-16 pb-2 pt-6 text-center sm:pt-8">
+        <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
+          {t.titulo.join(" ")}
+          <span className="hidden sm:inline"> · Brian Hawkins</span>
+        </p>
+        <h1 className="mx-auto mt-2 max-w-2xl font-titulo text-2xl font-bold leading-tight sm:text-4xl">
+          {t.instruccionBurbujas}
+        </h1>
+      </div>
+
+      <div ref={arena} className="relative min-h-0 flex-1">
+        {listo &&
+          ideas.map((p, i) => {
+            const c = cuerpos.current[i];
+            const h = tono(i, ideas.length);
+            return (
+              <button
+                key={p.numero}
+                ref={(el) => {
+                  nodos.current[i] = el;
+                }}
+                type="button"
+                onClick={() => reventar(i)}
+                aria-label={`${t.proyecto} ${p.numero}: ${p.nombre}`}
+                className="burbuja absolute left-0 top-0 rounded-full focus:outline-none"
+                style={{
+                  width: c.r * 2,
+                  height: c.r * 2,
+                  transform: `translate3d(${c.x - c.r}px, ${c.y - c.r}px, 0)`,
+                  ["--h" as string]: h,
+                  ["--retraso" as string]: `${-i * 0.7}s`,
+                }}
+              >
+                <span className={`burbuja-cuerpo ${fase[i] ?? ""}`}>
+                  <span className="burbuja-iris" />
+                  <span className="burbuja-brillo" />
+                  <span className="burbuja-brillo-2" />
+                  <span
+                    className="relative font-titulo font-black leading-none text-tinta"
+                    style={{ fontSize: c.r * 0.72 }}
+                  >
+                    {p.numero}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+
+        {gotas.map((g) => (
+          <span key={g.id} aria-hidden className="pointer-events-none absolute" style={{ left: g.x, top: g.y }}>
+            <span className="onda" style={{ borderColor: g.color }} />
+            {g.piezas.map((p, k) => (
+              <span
+                key={k}
+                className="gota"
+                style={{
+                  width: p.tam,
+                  height: p.tam,
+                  background: g.color,
+                  ["--dx" as string]: `${p.dx}px`,
+                  ["--dy" as string]: `${p.dy}px`,
+                }}
+              />
+            ))}
+          </span>
+        ))}
+      </div>
+
+      {idea && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ficha-burbuja"
+          className="fixed inset-0 z-50 grid place-items-center bg-black/55 p-4 backdrop-blur-sm animate-[aparecer_180ms_ease-out]"
+          onClick={(e) => e.target === e.currentTarget && cerrar()}
+        >
+          <article className="relative w-full max-w-lg animate-[emerger_260ms_cubic-bezier(.2,1.4,.4,1)] rounded-3xl border border-linea bg-hoja p-6 shadow-2xl sm:p-8">
+            <button
+              type="button"
+              onClick={cerrar}
+              aria-label={t.cerrar}
+              autoFocus
+              className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-linea text-tenue transition hover:text-tinta"
+            >
+              <X size={18} />
+            </button>
+            <span className="font-titulo text-6xl font-black leading-none text-tomate/90">
+              {String(idea.numero).padStart(2, "0")}
+            </span>
+            <div className="mt-3 flex flex-wrap items-center gap-2 pr-8">
+              <h2 id="ficha-burbuja" className="font-titulo text-2xl font-bold leading-tight sm:text-3xl">
+                {idea.nombre}
+              </h2>
+              <EtiquetaEstado estado={idea.estado} idioma={idioma} />
+            </div>
+            <p className="mt-3 text-tenue">{resumenDe(idea, idioma)}</p>
+            <p className="mt-3 text-xs text-tenue">{stackDe(idea, idioma)}</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {idea.enVivo && (
+                <a href={idea.enVivo} target="_blank" rel="noreferrer" className="boton-primario px-4 py-2">
+                  {t.abrir} <ArrowUpRight size={15} />
+                </a>
+              )}
+              {idea.repo && (
+                <a href={idea.repo} target="_blank" rel="noreferrer" className="boton-secundario px-4 py-2">
+                  <Github size={15} /> {t.codigo}
+                </a>
+              )}
+              {!!idea.presentacion?.length && (
+                <Presentacion slides={idea.presentacion} titulo={idea.nombre} idioma={idioma} />
+              )}
+              <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
+                <FileText size={15} /> {t.fichaCompleta}
+              </Link>
+            </div>
+          </article>
+        </div>
+      )}
+    </section>
+  );
+}

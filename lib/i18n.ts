@@ -42,6 +42,10 @@ const ES = {
   anterior: "Slide anterior",
   siguiente: "Slide siguiente",
   de: "de",
+  instruccionBurbujas: "Haz click en alguna burbuja para revelar el proyecto",
+  verTodos: "Ver todos los proyectos",
+  volverBurbujas: "Volver a las burbujas",
+  proyecto: "Proyecto",
 };
 
 const EN: typeof ES = {
@@ -78,6 +82,10 @@ const EN: typeof ES = {
   anterior: "Previous slide",
   siguiente: "Next slide",
   de: "of",
+  instruccionBurbujas: "Click on a bubble to reveal the project",
+  verTodos: "See all projects",
+  volverBurbujas: "Back to the bubbles",
+  proyecto: "Project",
 };
 
 export type Textos = typeof ES;

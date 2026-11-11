@@ -92,3 +92,141 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .casilla, .resaltada { animation: none; transition: none; }
 }
+
+/* ── Burbujas de la portada ─────────────────────────────────────────────
+   Pompas de jabón: cuerpo casi transparente, borde iridiscente que gira,
+   brillo especular arriba a la izquierda y un rebote suave de gelatina. */
+.burbuja {
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.burbuja-cuerpo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 50% 55%, hsl(var(--h) 80% 60% / 0.05) 0 52%, hsl(var(--h) 85% 70% / 0.16) 72%, hsl(var(--h) 90% 82% / 0.5) 96%, transparent 100%),
+    radial-gradient(circle at 30% 25%, hsl(0 0% 100% / 0.14), transparent 55%);
+  box-shadow:
+    inset 0 0 0 1px hsl(var(--h) 90% 85% / 0.35),
+    inset -10px -14px 26px hsl(calc(var(--h) + 60) 90% 60% / 0.28),
+    inset 8px 10px 22px hsl(calc(var(--h) - 50) 90% 70% / 0.18),
+    0 12px 30px -12px hsl(var(--h) 80% 50% / 0.45);
+  transition: transform 220ms ease;
+  animation: gelatina 4.5s ease-in-out infinite;
+  animation-delay: var(--retraso, 0s);
+}
+.burbuja:hover .burbuja-cuerpo,
+.burbuja:focus-visible .burbuja-cuerpo {
+  transform: scale(1.08);
+}
+.burbuja:focus-visible .burbuja-cuerpo {
+  outline: 2px solid rgb(var(--tomate));
+  outline-offset: 4px;
+}
+.burbuja-iris {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    hsl(var(--h) 95% 70% / 0.55),
+    hsl(calc(var(--h) + 70) 95% 70% / 0.15),
+    hsl(calc(var(--h) + 150) 95% 72% / 0.5),
+    hsl(calc(var(--h) + 230) 95% 70% / 0.15),
+    hsl(var(--h) 95% 70% / 0.55)
+  );
+  -webkit-mask: radial-gradient(circle, transparent 62%, #000 92%, transparent 100%);
+  mask: radial-gradient(circle, transparent 62%, #000 92%, transparent 100%);
+  mix-blend-mode: screen;
+  animation: girar 9s linear infinite;
+}
+.burbuja-brillo {
+  position: absolute;
+  left: 18%;
+  top: 12%;
+  width: 34%;
+  height: 22%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, hsl(0 0% 100% / 0.9), hsl(0 0% 100% / 0));
+  transform: rotate(-35deg);
+}
+.burbuja-brillo-2 {
+  position: absolute;
+  right: 20%;
+  bottom: 16%;
+  width: 12%;
+  height: 8%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, hsl(0 0% 100% / 0.6), hsl(0 0% 100% / 0));
+  transform: rotate(-35deg);
+}
+.burbuja-cuerpo > span:last-child {
+  text-shadow: 0 2px 12px hsl(var(--h) 90% 50% / 0.55);
+}
+:root[data-tema="claro"] .burbuja-cuerpo {
+  background:
+    radial-gradient(circle at 50% 55%, hsl(var(--h) 80% 60% / 0.06) 0 52%, hsl(var(--h) 80% 60% / 0.2) 74%, hsl(var(--h) 80% 55% / 0.55) 97%, transparent 100%),
+    radial-gradient(circle at 30% 25%, hsl(0 0% 100% / 0.6), transparent 55%);
+}
+:root[data-tema="claro"] .burbuja-iris { mix-blend-mode: multiply; }
+.reventando {
+  animation: reventar 200ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes reventar {
+  0% { transform: scale(1); opacity: 1; }
+  60% { transform: scale(1.25); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+@keyframes gelatina {
+  0%, 100% { transform: scale(1, 1); }
+  25% { transform: scale(1.03, 0.97); }
+  50% { transform: scale(0.98, 1.02); }
+  75% { transform: scale(1.02, 0.985); }
+}
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+.onda {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid;
+  border-radius: 9999px;
+  animation: onda 450ms ease-out forwards;
+}
+@keyframes onda {
+  from { transform: scale(1); opacity: 0.9; }
+  to { transform: scale(9); opacity: 0; }
+}
+.gota {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  animation: gota 600ms cubic-bezier(.15,.8,.3,1) forwards;
+}
+@keyframes gota {
+  to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 14px)) scale(0.3); opacity: 0; }
+}
+@keyframes emerger {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .burbuja-cuerpo, .burbuja-iris { animation: none; }
+}
+.inflando {
+  animation: inflar 420ms cubic-bezier(.2,1.5,.4,1);
+}
+@keyframes inflar {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
