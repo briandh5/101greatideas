@@ -194,16 +194,14 @@ body {
   position: absolute;
   left: 0;
   top: 0;
-  width: 20px;
-  height: 20px;
-  margin: -10px 0 0 -10px;
   border: 2px solid;
   border-radius: 9999px;
-  animation: onda 450ms ease-out forwards;
+  transform: translate(-50%, -50%);
+  animation: onda 480ms ease-out forwards;
 }
 @keyframes onda {
-  from { transform: scale(1); opacity: 0.9; }
-  to { transform: scale(9); opacity: 0; }
+  from { width: 16px; height: 16px; opacity: 0.9; }
+  to { width: var(--tam, 160px); height: var(--tam, 160px); opacity: 0; }
 }
 .gota {
   position: absolute;
@@ -229,4 +227,20 @@ body {
 @keyframes inflar {
   from { transform: scale(0); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+/* Explosión total al pasar al listado */
+.destello {
+  background: radial-gradient(circle at 50% 55%, rgb(var(--tinta) / 0.35), rgb(var(--papel) / 0.95) 70%);
+  animation: destello 420ms ease-out forwards;
+}
+@keyframes destello {
+  0% { opacity: 0; }
+  35% { opacity: 1; }
+  100% { opacity: 1; }
+}
+/* Intro: cada elemento entra después del anterior */
+.entra { animation: aparecer 700ms cubic-bezier(.2,.8,.2,1) both; }
+.sale { animation: salir 320ms ease-in forwards; }
+@keyframes salir {
+  to { opacity: 0; transform: translateY(-16px) scale(0.98); }
 }

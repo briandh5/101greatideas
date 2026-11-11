@@ -9,49 +9,126 @@ import type { Idea } from "@/lib/types";
 
 const ANCLA = "#todos";
 
+type Vista = "intro" | "burbujas" | "todos";
+
 /**
- * Portada de la guía: primero las burbujas; el botón fijo de abajo cambia a la
- * cuadrícula y lista de siempre (que llega ya renderizada como children).
- * La vista vive en el ancla #todos para que "atrás" y recargar funcionen.
+ * Portada de la guía en tres pasos: intro (título, texto y botón Iniciar), burbujas
+ * que se disparan desde abajo, y la cuadrícula y lista de siempre (llega como children).
+ * El listado vive en el ancla #todos para que "atrás" y recargar funcionen.
  */
 export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; idioma: Idioma; children: React.ReactNode }) {
   const t = TEXTOS[idioma];
-  const [todos, setTodos] = useState(false);
+  const [vista, setVista] = useState<Vista>("intro");
+  const [saliendoIntro, setSaliendoIntro] = useState(false);
+  const [explotando, setExplotando] = useState(false);
+  // cambia en cada regreso para que las burbujas se vuelvan a disparar desde abajo
+  const [tanda, setTanda] = useState(0);
 
   useEffect(() => {
-    const leer = () => setTodos(window.location.hash === ANCLA);
-    leer();
+    if (window.location.hash === ANCLA) setVista("todos");
+    const leer = () => {
+      setExplotando(false);
+      if (window.location.hash === ANCLA) setVista("todos");
+      else {
+        setVista("burbujas");
+        setTanda((n) => n + 1);
+      }
+    };
     window.addEventListener("popstate", leer);
     return () => window.removeEventListener("popstate", leer);
   }, []);
 
-  const cambiar = () => {
-    const siguiente = !todos;
-    history.pushState(null, "", siguiente ? ANCLA : window.location.pathname + window.location.search);
-    setTodos(siguiente);
+  const iniciar = () => {
+    setSaliendoIntro(true);
+    window.setTimeout(() => {
+      setVista("burbujas");
+      setSaliendoIntro(false);
+    }, 320);
+  };
+
+  const verTodos = () => {
+    if (explotando) return;
+    setExplotando(true);
+  };
+
+  const alTerminarExplosion = () => {
+    history.pushState(null, "", ANCLA);
+    setExplotando(false);
+    setVista("todos");
     window.scrollTo({ top: 0 });
+  };
+
+  const volver = () => {
+    history.pushState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo({ top: 0 });
+    setTanda((n) => n + 1);
+    setVista("burbujas");
   };
 
   return (
     <main>
-      {todos ? <div className="animate-[aparecer_220ms_ease-out]">{children}</div> : <Burbujas ideas={ideas} idioma={idioma} />}
+      {vista === "intro" && (
+        <section className={`grid min-h-[100svh] place-items-center px-6 py-16 text-center ${saliendoIntro ? "sale" : ""}`}>
+          <div className="max-w-2xl">
+            <h1 className="entra font-titulo text-6xl font-black leading-[0.95] tracking-tight sm:text-8xl">
+              {t.titulo[0]}
+              <br />
+              {t.titulo[1]}
+            </h1>
+            <p
+              className="entra mx-auto mt-8 max-w-xl font-firma text-lg font-light leading-relaxed text-tenue sm:text-xl"
+              style={{ animationDelay: "700ms" }}
+            >
+              {t.introBurbujas}
+            </p>
+            <button
+              type="button"
+              onClick={iniciar}
+              className="entra boton-primario mt-10 px-10 py-4 text-base shadow-lg shadow-tomate/30"
+              style={{ animationDelay: "1400ms" }}
+            >
+              {t.iniciar}
+            </button>
+          </div>
+        </section>
+      )}
 
-      <button
-        type="button"
-        onClick={cambiar}
-        className="boton-primario fixed bottom-6 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap px-6 shadow-lg shadow-tomate/30 sm:bottom-8"
-      >
-        <LayoutGrid size={17} /> {todos ? t.volverBurbujas : t.verTodos}
-      </button>
+      {vista === "burbujas" && (
+        <Burbujas key={tanda} ideas={ideas} idioma={idioma} saliendo={explotando} onSalida={alTerminarExplosion} />
+      )}
 
-      {todos && (
-        <Link
-          href="/nueva"
-          aria-label={t.nuevaIdea}
-          className="fixed bottom-6 right-4 grid h-14 w-14 place-items-center rounded-full bg-tomate text-white shadow-lg shadow-tomate/30 transition hover:scale-105 sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
-        >
-          <Plus size={28} strokeWidth={2.5} />
-        </Link>
+      {vista === "todos" && <div className="animate-[aparecer_300ms_ease-out]">{children}</div>}
+
+      {vista === "burbujas" && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-4 sm:bottom-8">
+          <button
+            type="button"
+            onClick={verTodos}
+            disabled={explotando}
+            className="boton-primario pointer-events-auto whitespace-nowrap px-6 shadow-lg shadow-tomate/30 animate-[aparecer_500ms_ease-out_both]"
+          >
+            <LayoutGrid size={17} /> {t.verTodos}
+          </button>
+        </div>
+      )}
+
+      {vista === "todos" && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-5 z-30 flex items-end justify-center gap-8 px-4 sm:bottom-8 sm:gap-14">
+          <button
+            type="button"
+            onClick={volver}
+            className="boton-primario pointer-events-auto whitespace-nowrap px-6 shadow-lg shadow-tomate/30"
+          >
+            <LayoutGrid size={17} /> {t.volverBurbujas}
+          </button>
+          <Link
+            href="/nueva"
+            className="pointer-events-auto flex flex-col items-center justify-center rounded-2xl bg-hoja px-4 py-2 text-tomate shadow-lg ring-2 ring-tomate transition hover:scale-105"
+          >
+            <Plus size={30} strokeWidth={2.75} />
+            <span className="-mt-0.5 text-[11px] font-semibold leading-tight">{t.agregarIdea}</span>
+          </Link>
+        </div>
       )}
     </main>
   );

@@ -16,6 +16,8 @@ interface Cuerpo {
   vy: number;
   r: number;
   reventada: boolean;
+  /** Aún viene subiendo desde abajo de la pantalla (no rebota en el piso). */
+  entrando: boolean;
 }
 
 interface Gota {
@@ -23,6 +25,7 @@ interface Gota {
   x: number;
   y: number;
   color: string;
+  r: number;
   piezas: { dx: number; dy: number; tam: number }[];
 }
 
@@ -32,11 +35,25 @@ const tono = (n: number, total: number) => Math.round((n * 360) / Math.max(total
 /** Rapidez objetivo en px/s: ni tan calmada ni frenética. */
 const RAPIDEZ = [70, 125] as const;
 
+/** Cuánto dura el frenado después del disparo inicial, en segundos. */
+const FRENADO = 2.2;
+
 /**
  * Protector de pantalla de burbujas: una por proyecto, rebotan entre ellas y contra
- * las orillas. Al tocar una, revienta y abre la ficha del proyecto en un pop up.
+ * las orillas. Al montarse, se disparan desde abajo. Al tocar una, revienta y abre la
+ * ficha del proyecto en un pop up. Con `saliendo`, revientan todas y avisa con `onSalida`.
  */
-export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idioma }) {
+export default function Burbujas({
+  ideas,
+  idioma,
+  saliendo = false,
+  onSalida,
+}: {
+  ideas: Idea[];
+  idioma: Idioma;
+  saliendo?: boolean;
+  onSalida?: () => void;
+}) {
   const t = TEXTOS[idioma];
   const arena = useRef<HTMLDivElement>(null);
   const nodos = useRef<(HTMLButtonElement | null)[]>([]);
@@ -45,6 +62,7 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
   const [abierta, setAbierta] = useState<number | null>(null);
   const [fase, setFase] = useState<Record<number, "reventando" | "inflando">>({});
   const [gotas, setGotas] = useState<Gota[]>([]);
+  const [destello, setDestello] = useState(false);
 
   // Coloca las burbujas sin encimarse, con radio según el tamaño de la pantalla
   useLayoutEffect(() => {
@@ -54,19 +72,16 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
     const base = Math.min(88, Math.max(36, Math.sqrt((W * H * 0.3) / (ideas.length * Math.PI))));
     const lentitud = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0.25 : 1;
     const lista: Cuerpo[] = [];
-    ideas.forEach(() => {
+    // Disparo: todas arrancan debajo del borde inferior, escalonadas, y salen hacia arriba
+    ideas.forEach((_, i) => {
       const r = base * (0.86 + Math.random() * 0.28);
-      let x = 0;
-      let y = 0;
-      for (let intento = 0; intento < 200; intento++) {
-        x = r + Math.random() * Math.max(1, W - 2 * r);
-        y = r + Math.random() * Math.max(1, H - 2 * r);
-        if (lista.every((o) => Math.hypot(o.x - x, o.y - y) > o.r + r + 4)) break;
-      }
-      const angulo = Math.random() * Math.PI * 2;
-      const v = (RAPIDEZ[0] + Math.random() * (RAPIDEZ[1] - RAPIDEZ[0])) * lentitud;
-      lista.push({ x, y, r, vx: Math.cos(angulo) * v, vy: Math.sin(angulo) * v, reventada: false });
+      const x = r + ((i + 0.5) / ideas.length) * Math.max(1, W - 2 * r) + (Math.random() - 0.5) * r;
+      const y = H + r + Math.random() * H * 0.45;
+      const v = (H * 1.1 + Math.random() * H * 0.9) * (lentitud < 1 ? 0.6 : 1);
+      const desvio = (Math.random() - 0.5) * 0.7;
+      lista.push({ x, y, r, vx: Math.sin(desvio) * v, vy: -Math.cos(desvio) * v, reventada: false, entrando: true });
     });
+    for (const c of lista) c.x = Math.min(W - c.r, Math.max(c.r, c.x));
     cuerpos.current = lista;
     setListo(true);
   }, [ideas]);
@@ -84,7 +99,8 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
     const obs = new ResizeObserver(medir);
     obs.observe(caja);
 
-    let anterior = performance.now();
+    const inicio = performance.now();
+    let anterior = inicio;
     let cuadro = 0;
     const paso = (ahora: number) => {
       const dt = Math.min(0.05, (ahora - anterior) / 1000); // si la pestaña estuvo oculta, no salta
@@ -98,16 +114,17 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
         if (c.x < c.r) { c.x = c.r; c.vx = Math.abs(c.vx); }
         if (c.x > W - c.r) { c.x = W - c.r; c.vx = -Math.abs(c.vx); }
         if (c.y < c.r) { c.y = c.r; c.vy = Math.abs(c.vy); }
-        if (c.y > H - c.r) { c.y = H - c.r; c.vy = -Math.abs(c.vy); }
+        if (c.entrando && c.y < H - c.r) c.entrando = false;
+        if (!c.entrando && c.y > H - c.r) { c.y = H - c.r; c.vy = -Math.abs(c.vy); }
       }
 
       // Choques elásticos entre burbujas (masa proporcional al área)
       for (let i = 0; i < cs.length; i++) {
         const a = cs[i];
-        if (a.reventada) continue;
+        if (a.reventada || a.entrando) continue;
         for (let j = i + 1; j < cs.length; j++) {
           const b = cs[j];
-          if (b.reventada) continue;
+          if (b.reventada || b.entrando) continue;
           const dx = b.x - a.x;
           const dy = b.y - a.y;
           const dist = Math.hypot(dx, dy) || 0.001;
@@ -133,12 +150,14 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
         }
       }
 
+      // tras el disparo frenan poco a poco; luego se quedan en una rapidez agradable
+      const frenando = (ahora - inicio) / 1000 < FRENADO;
       cs.forEach((c, i) => {
-        // mantiene una rapidez agradable: ni se detienen ni se aceleran de más
         const v = Math.hypot(c.vx, c.vy) || 1;
         const objetivo = Math.min(Math.max(v, RAPIDEZ[0] * 0.6), RAPIDEZ[1] * 1.2);
-        c.vx *= 1 + ((objetivo - v) / v) * 0.05;
-        c.vy *= 1 + ((objetivo - v) / v) * 0.05;
+        const k = c.entrando ? 0 : frenando ? 0.022 : 0.05;
+        c.vx *= 1 + ((objetivo - v) / v) * k;
+        c.vy *= 1 + ((objetivo - v) / v) * k;
         const nodo = nodos.current[i];
         if (nodo) nodo.style.transform = `translate3d(${c.x - c.r}px, ${c.y - c.r}px, 0)`;
       });
@@ -151,10 +170,10 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
     };
   }, [listo]);
 
-  const reventar = useCallback(
+  const estallar = useCallback(
     (i: number) => {
       const c = cuerpos.current[i];
-      if (!c || c.reventada) return;
+      if (!c || c.reventada) return false;
       c.reventada = true;
       setFase((f) => ({ ...f, [i]: "reventando" }));
       const piezas = Array.from({ length: 16 }, (_, k) => {
@@ -163,12 +182,30 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
         return { dx: Math.cos(ang) * dist, dy: Math.sin(ang) * dist, tam: 3 + Math.random() * 5 };
       });
       const id = Date.now() + i;
-      setGotas((g) => [...g, { id, x: c.x, y: c.y, color: `hsl(${tono(i, ideas.length)} 90% 75%)`, piezas }]);
+      setGotas((g) => [...g, { id, x: c.x, y: c.y, r: c.r, color: `hsl(${tono(i, ideas.length)} 90% 75%)`, piezas }]);
       window.setTimeout(() => setGotas((g) => g.filter((x) => x.id !== id)), 700);
-      window.setTimeout(() => setAbierta(i), 260);
+      return true;
     },
     [ideas.length],
   );
+
+  const reventar = (i: number) => {
+    if (saliendo) return;
+    if (estallar(i)) window.setTimeout(() => setAbierta(i), 260);
+  };
+
+  // Explosión total: revientan todas en cadena, destello, y luego se pasa al listado
+  useEffect(() => {
+    if (!saliendo) return;
+    setAbierta(null);
+    const orden = cuerpos.current.map((_, i) => i).sort(() => Math.random() - 0.5);
+    const timers = orden.map((i, n) => window.setTimeout(() => estallar(i), n * 45));
+    const fin = orden.length * 45;
+    timers.push(window.setTimeout(() => setDestello(true), fin));
+    timers.push(window.setTimeout(() => onSalida?.(), fin + 420));
+    return () => timers.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saliendo]);
 
   // Al cerrar la ficha, la burbuja vuelve a inflarse donde estaba y sigue rebotando
   const cerrar = useCallback(() => {
@@ -199,7 +236,7 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
 
   return (
     <section className="flex h-[100svh] flex-col overflow-hidden">
-      <div className="shrink-0 px-16 pb-2 pt-6 text-center sm:pt-8">
+      <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-6 text-center sm:pt-8">
         <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
           {t.titulo.join(" ")}
           <span className="hidden sm:inline"> · Brian Hawkins</span>
@@ -249,7 +286,7 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
 
         {gotas.map((g) => (
           <span key={g.id} aria-hidden className="pointer-events-none absolute" style={{ left: g.x, top: g.y }}>
-            <span className="onda" style={{ borderColor: g.color }} />
+            <span className="onda" style={{ borderColor: g.color, ["--tam" as string]: `${g.r * 3.2}px` }} />
             {g.piezas.map((p, k) => (
               <span
                 key={k}
@@ -266,6 +303,8 @@ export default function Burbujas({ ideas, idioma }: { ideas: Idea[]; idioma: Idi
           </span>
         ))}
       </div>
+
+      {destello && <div aria-hidden className="destello pointer-events-none fixed inset-0 z-40" />}
 
       {idea && (
         <div
