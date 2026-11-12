@@ -250,15 +250,22 @@ export default function Burbujas({
 
   return (
     <section className="flex h-[100svh] flex-col overflow-hidden">
-      <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-16 text-center sm:pt-8">
-        <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
+      {vacio ? (
+        // Sin burbujas: fuera la instrucción, y el título se va chiquito junto al engrane
+        <p className="fixed right-16 top-[27px] z-30 animate-[aparecer_500ms_ease-out_both] font-firma text-[10px] font-medium uppercase tracking-[0.25em] text-tenue sm:right-20 sm:top-[35px] sm:text-[11px]">
           {t.titulo.join(" ")}
-          <span className="hidden sm:inline"> · Brian Hawkins</span>
         </p>
-        <h1 className="mx-auto mt-2 max-w-2xl font-titulo text-2xl font-bold leading-tight sm:text-4xl">
-          {t.instruccionBurbujas}
-        </h1>
-      </div>
+      ) : (
+        <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-16 text-center sm:pt-8">
+          <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
+            {t.titulo.join(" ")}
+            <span className="hidden sm:inline"> · Brian Hawkins</span>
+          </p>
+          <h1 className="mx-auto mt-2 max-w-2xl font-titulo text-2xl font-bold leading-tight sm:text-4xl">
+            {t.instruccionBurbujas}
+          </h1>
+        </div>
+      )}
 
       <div ref={arena} className="relative min-h-0 flex-1">
         {listo &&
