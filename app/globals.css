@@ -244,3 +244,73 @@ body {
 @keyframes salir {
   to { opacity: 0; transform: translateY(-16px) scale(0.98); }
 }
+/* Aro que sopla burbujas: aparece cuando ya se reventaron todas */
+.aro {
+  position: relative;
+  width: min(62vw, 240px);
+  aspect-ratio: 200 / 290;
+  animation: aro-sube 700ms cubic-bezier(.2,1.3,.4,1) both;
+  -webkit-tap-highlight-color: transparent;
+}
+.aro-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: aro-mece 3.2s ease-in-out 700ms infinite;
+  transform-origin: 50% 90%;
+  filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.35));
+}
+.aro-pelicula { animation: pelicula 2.4s ease-in-out infinite; transform-origin: 100px 98px; }
+.aro-texto {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 33.8%;
+  transform: translateY(-50%);
+  text-align: center;
+  text-wrap: balance;
+  transition: transform 200ms ease;
+}
+.aro:hover .aro-texto { transform: translateY(-50%) scale(1.06); }
+.aro:focus-visible { outline: 2px solid rgb(var(--tomate)); outline-offset: 8px; border-radius: 24px; }
+.aro-soplo {
+  position: absolute;
+  left: 78%;
+  top: 22%;
+  width: calc(10px + var(--k) * 4px);
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  border: 1.5px solid hsl(calc(180 + var(--k) * 40) 90% 75% / 0.8);
+  background: radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.6), transparent 45%);
+  opacity: 0;
+  animation: soplo 3s ease-out infinite;
+  animation-delay: calc(var(--k) * 0.6s + 0.8s);
+}
+.aro-baja { animation: aro-baja 650ms cubic-bezier(.5,0,.8,.4) forwards; }
+@keyframes aro-sube {
+  from { transform: translateY(70vh); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes aro-baja {
+  0% { transform: translateY(0) rotate(0); }
+  20% { transform: translateY(-14px) rotate(-4deg); }
+  100% { transform: translateY(110vh) rotate(8deg); }
+}
+@keyframes aro-mece {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes pelicula {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.02, 0.98); }
+}
+@keyframes soplo {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(calc(40px + var(--k) * 18px), calc(-90px - var(--k) * 22px)) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aro-svg, .aro-pelicula, .aro-soplo { animation: none; }
+}

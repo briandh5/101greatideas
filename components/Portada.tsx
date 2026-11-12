@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LayoutGrid, Plus } from "lucide-react";
 import Burbujas from "./Burbujas";
+import SelectorIdioma from "./SelectorIdioma";
 import { TEXTOS, type Idioma } from "@/lib/i18n";
 import type { Idea } from "@/lib/types";
 
@@ -90,11 +91,22 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
               {t.iniciar}
             </button>
           </div>
+          <SelectorIdioma
+            idioma={idioma}
+            className="entra fixed bottom-5 right-4 z-30 [animation-delay:1800ms] sm:bottom-6 sm:right-6"
+          />
         </section>
       )}
 
       {vista === "burbujas" && (
-        <Burbujas key={tanda} ideas={ideas} idioma={idioma} saliendo={explotando} onSalida={alTerminarExplosion} />
+        <Burbujas
+          key={tanda}
+          ideas={ideas}
+          idioma={idioma}
+          saliendo={explotando}
+          onSalida={alTerminarExplosion}
+          onRecargar={() => setTanda((n) => n + 1)}
+        />
       )}
 
       {vista === "todos" && <div className="animate-[aparecer_300ms_ease-out]">{children}</div>}

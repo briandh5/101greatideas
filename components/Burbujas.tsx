@@ -48,11 +48,14 @@ export default function Burbujas({
   idioma,
   saliendo = false,
   onSalida,
+  onRecargar,
 }: {
   ideas: Idea[];
   idioma: Idioma;
   saliendo?: boolean;
   onSalida?: () => void;
+  /** Cuando ya no queda ninguna, el aro baja y se vuelven a soplar todas. */
+  onRecargar?: () => void;
 }) {
   const t = TEXTOS[idioma];
   const arena = useRef<HTMLDivElement>(null);
@@ -60,7 +63,9 @@ export default function Burbujas({
   const cuerpos = useRef<Cuerpo[]>([]);
   const [listo, setListo] = useState(false);
   const [abierta, setAbierta] = useState<number | null>(null);
-  const [fase, setFase] = useState<Record<number, "reventando" | "inflando">>({});
+  // Burbujas ya reventadas: desaparecen hasta que se recargan
+  const [fase, setFase] = useState<Record<number, "reventando">>({});
+  const [aroBajando, setAroBajando] = useState(false);
   const [gotas, setGotas] = useState<Gota[]>([]);
   const [destello, setDestello] = useState(false);
 
@@ -207,23 +212,17 @@ export default function Burbujas({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saliendo]);
 
-  // Al cerrar la ficha, la burbuja vuelve a inflarse donde estaba y sigue rebotando
-  const cerrar = useCallback(() => {
-    if (abierta === null) return;
-    const i = abierta;
-    setAbierta(null);
-    const c = cuerpos.current[i];
-    if (c) c.reventada = false;
-    setFase((f) => ({ ...f, [i]: "inflando" }));
-    window.setTimeout(
-      () =>
-        setFase((f) => {
-          const { [i]: _, ...resto } = f;
-          return resto;
-        }),
-      450,
-    );
-  }, [abierta]);
+  // Al cerrar la ficha, la burbuja reventada ya no vuelve
+  const cerrar = useCallback(() => setAbierta(null), []);
+
+  const sinBurbujas = listo && Object.keys(fase).length >= ideas.length;
+  const mostrarAro = sinBurbujas && abierta === null && !saliendo;
+
+  const recargar = () => {
+    if (aroBajando) return;
+    setAroBajando(true);
+    window.setTimeout(() => onRecargar?.(), 650);
+  };
 
   useEffect(() => {
     if (abierta === null) return;
@@ -259,6 +258,8 @@ export default function Burbujas({
                 }}
                 type="button"
                 onClick={() => reventar(i)}
+                tabIndex={fase[i] ? -1 : 0}
+                aria-hidden={fase[i] ? true : undefined}
                 aria-label={`${t.proyecto} ${p.numero}: ${p.nombre}`}
                 className="burbuja absolute left-0 top-0 rounded-full focus:outline-none"
                 style={{
@@ -303,6 +304,42 @@ export default function Burbujas({
           </span>
         ))}
       </div>
+
+      {mostrarAro && (
+        <div className="pointer-events-none fixed inset-0 z-20 grid place-items-center px-6">
+          <button
+            type="button"
+            onClick={recargar}
+            className={`aro pointer-events-auto ${aroBajando ? "aro-baja" : ""}`}
+            aria-label={t.recargar}
+          >
+            <svg viewBox="0 0 200 290" className="aro-svg" aria-hidden>
+              <defs>
+                <linearGradient id="aro-borde" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="rgb(var(--tomate))" />
+                  <stop offset="0.5" stopColor="rgb(var(--mostaza))" />
+                  <stop offset="1" stopColor="rgb(var(--menta))" />
+                </linearGradient>
+                <radialGradient id="aro-pelicula" cx="0.35" cy="0.3" r="0.8">
+                  <stop offset="0" stopColor="#fff" stopOpacity="0.22" />
+                  <stop offset="0.55" stopColor="hsl(200 90% 70%)" stopOpacity="0.08" />
+                  <stop offset="0.85" stopColor="hsl(300 90% 70%)" stopOpacity="0.2" />
+                  <stop offset="1" stopColor="hsl(50 90% 70%)" stopOpacity="0.35" />
+                </radialGradient>
+              </defs>
+              <rect x="94" y="186" width="12" height="100" rx="6" fill="url(#aro-borde)" />
+              <circle cx="100" cy="98" r="84" fill="url(#aro-pelicula)" className="aro-pelicula" />
+              <circle cx="100" cy="98" r="84" fill="none" stroke="url(#aro-borde)" strokeWidth="10" />
+            </svg>
+            <span className="aro-texto font-titulo text-xl font-bold leading-tight text-tinta sm:text-2xl">
+              {t.recargar}
+            </span>
+            {[0, 1, 2, 3, 4].map((k) => (
+              <span key={k} aria-hidden className="aro-soplo" style={{ ["--k" as string]: k }} />
+            ))}
+          </button>
+        </div>
+      )}
 
       {destello && <div aria-hidden className="destello pointer-events-none fixed inset-0 z-40" />}
 
