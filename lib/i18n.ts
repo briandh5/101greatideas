@@ -51,6 +51,7 @@ const ES = {
   iniciar: "Iniciar",
   agregarIdea: "Agregar idea",
   recargar: "Recargar burbujas",
+  acercaDe: "Acerca de",
 };
 
 const EN: typeof ES = {
@@ -96,6 +97,7 @@ const EN: typeof ES = {
   iniciar: "Start",
   agregarIdea: "Add idea",
   recargar: "Reload bubbles",
+  acercaDe: "About",
 };
 
 export type Textos = typeof ES;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { LayoutGrid, Plus } from "lucide-react";
 import Burbujas from "./Burbujas";
@@ -22,6 +22,8 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
   const [vista, setVista] = useState<Vista>("intro");
   const [saliendoIntro, setSaliendoIntro] = useState(false);
   const [explotando, setExplotando] = useState(false);
+  // a dónde llevar al terminar la explosión: arriba del listado o a "Sobre la guía"
+  const destino = useRef<"arriba" | "acerca">("arriba");
   // cambia en cada regreso para que las burbujas se vuelvan a disparar desde abajo
   const [tanda, setTanda] = useState(0);
 
@@ -47,8 +49,9 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
     }, 320);
   };
 
-  const verTodos = () => {
+  const verTodos = (a: "arriba" | "acerca" = "arriba") => {
     if (explotando) return;
+    destino.current = a;
     setExplotando(true);
   };
 
@@ -57,6 +60,12 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
     setExplotando(false);
     setVista("todos");
     window.scrollTo({ top: 0 });
+    if (destino.current === "acerca") {
+      window.setTimeout(
+        () => document.getElementById("sobre-la-guia")?.closest("section")?.scrollIntoView({ behavior: "smooth", block: "center" }),
+        120,
+      );
+    }
   };
 
   const volver = () => {
@@ -112,14 +121,22 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
       {vista === "todos" && <div className="animate-[aparecer_300ms_ease-out]">{children}</div>}
 
       {vista === "burbujas" && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-4 sm:bottom-8">
+        <div className="pointer-events-none fixed inset-x-0 bottom-3 z-30 flex flex-col items-center gap-1.5 px-4 animate-[aparecer_500ms_ease-out_both] sm:bottom-5">
           <button
             type="button"
-            onClick={verTodos}
+            onClick={() => verTodos()}
             disabled={explotando}
-            className="boton-primario pointer-events-auto whitespace-nowrap px-6 shadow-lg shadow-tomate/30 animate-[aparecer_500ms_ease-out_both]"
+            className="boton-primario pointer-events-auto whitespace-nowrap px-6 shadow-lg shadow-tomate/30"
           >
             <LayoutGrid size={17} /> {t.verTodos}
+          </button>
+          <button
+            type="button"
+            onClick={() => verTodos("acerca")}
+            disabled={explotando}
+            className="pointer-events-auto px-3 py-1 text-sm font-medium text-tinta underline decoration-1 underline-offset-4 transition hover:text-tomate"
+          >
+            {t.acercaDe}
           </button>
         </div>
       )}
