@@ -372,3 +372,4 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .tap-mano, .tap-onda { animation: none; }
 }
+.contador-revienta { animation: reventar 260ms ease-out forwards !important; }

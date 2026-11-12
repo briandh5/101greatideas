@@ -226,7 +226,39 @@ export default function Burbujas({
   }, [abierta, ideas.length]);
 
   const sinBurbujas = listo && Object.keys(fase).length >= ideas.length;
-  const mostrarAro = sinBurbujas && abierta === null && !saliendo;
+  // Al terminar: el contador llega al total, revienta, y después sale el aro
+  const [contador, setContador] = useState<"visible" | "revienta" | "fuera">("visible");
+  const contadorRef = useRef<HTMLSpanElement>(null);
+  const terminado = sinBurbujas && abierta === null && !saliendo;
+  useEffect(() => {
+    if (!terminado || contador !== "visible") return;
+    const t1 = window.setTimeout(() => {
+      setContador("revienta");
+      const caja = contadorRef.current?.getBoundingClientRect();
+      const base = arena.current?.getBoundingClientRect();
+      if (caja && base) {
+        const r = caja.width / 2;
+        const piezas = Array.from({ length: 18 }, (_, k) => {
+          const ang = (k / 18) * Math.PI * 2 + Math.random() * 0.3;
+          const dist = r * (0.9 + Math.random() * 0.8);
+          return { dx: Math.cos(ang) * dist, dy: Math.sin(ang) * dist, tam: 3 + Math.random() * 5 };
+        });
+        const id = Date.now();
+        setGotas((g) => [
+          ...g,
+          { id, x: caja.left + r - base.left, y: caja.top + caja.height / 2 - base.top, r: r * 0.8, color: "rgb(var(--tomate))", piezas },
+        ]);
+        window.setTimeout(() => setGotas((g) => g.filter((x) => x.id !== id)), 700);
+      }
+    }, 900);
+    return () => clearTimeout(t1);
+  }, [terminado, contador]);
+  useEffect(() => {
+    if (contador !== "revienta") return;
+    const t2 = window.setTimeout(() => setContador("fuera"), 450);
+    return () => clearTimeout(t2);
+  }, [contador]);
+  const mostrarAro = terminado && contador === "fuera";
   const vacio = mostrarAro && !aroBajando;
   useEffect(() => {
     onVacio?.(vacio);
@@ -250,22 +282,18 @@ export default function Burbujas({
 
   return (
     <section className="flex h-[100svh] flex-col overflow-hidden">
-      {vacio ? (
-        // Sin burbujas: fuera la instrucción, y el título se va chiquito junto al engrane
-        <p className="fixed right-16 top-[27px] z-30 animate-[aparecer_500ms_ease-out_both] font-firma text-[10px] font-medium uppercase tracking-[0.25em] text-tenue sm:right-20 sm:top-[35px] sm:text-[11px]">
+      <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-16 text-center sm:pt-8">
+        <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
           {t.titulo.join(" ")}
+          <span className="hidden sm:inline"> · Brian Hawkins</span>
         </p>
-      ) : (
-        <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-16 text-center sm:pt-8">
-          <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
-            {t.titulo.join(" ")}
-            <span className="hidden sm:inline"> · Brian Hawkins</span>
-          </p>
+        {/* sin burbujas ya no hay nada que revelar: fuera la instrucción */}
+        {!sinBurbujas && (
           <h1 className="mx-auto mt-2 max-w-2xl font-titulo text-2xl font-bold leading-tight sm:text-4xl">
             {t.instruccionBurbujas}
           </h1>
-        </div>
-      )}
+        )}
+      </div>
 
       <div ref={arena} className="relative min-h-0 flex-1">
         {listo &&
@@ -327,7 +355,7 @@ export default function Burbujas({
         ))}
       </div>
 
-      {Object.keys(fase).length > 0 && !saliendo && (
+      {Object.keys(fase).length > 0 && !saliendo && contador !== "fuera" && (
         <div
           role="status"
           aria-live="polite"
@@ -335,7 +363,8 @@ export default function Burbujas({
         >
           <span
             key={vistos}
-            className={`inline-flex items-baseline gap-1.5 rounded-full border border-linea bg-hoja/90 px-4 py-2 text-sm text-tenue shadow-sm backdrop-blur ${vistos ? "contador-late" : ""}`}
+            ref={contadorRef}
+            className={`${contador === "revienta" ? "contador-revienta" : ""} inline-flex items-baseline gap-1.5 rounded-full border border-linea bg-hoja/90 px-4 py-2 text-sm text-tenue shadow-sm backdrop-blur ${vistos ? "contador-late" : ""}`}
           >
             {t.vistos}:
             <span className="inline-flex items-baseline font-titulo text-lg font-bold leading-none tabular-nums">
@@ -377,7 +406,7 @@ export default function Burbujas({
               <circle cx="100" cy="98" r="84" fill="none" stroke="url(#aro-borde)" strokeWidth="10" />
             </svg>
             {!aroBajando && <Tap retraso={2700} className="left-[62%] top-[44%]" />}
-            <span className="aro-texto font-titulo text-sm font-bold leading-tight text-tinta/85 sm:text-[15px]">
+            <span className="aro-texto font-titulo text-[13px] font-bold leading-tight text-tinta/85 sm:text-sm">
               {t.recargar}
             </span>
             {[0, 1, 2, 3, 4].map((k) => (
@@ -432,9 +461,11 @@ export default function Burbujas({
               {!!idea.presentacion?.length && (
                 <Presentacion slides={idea.presentacion} titulo={idea.nombre} idioma={idioma} />
               )}
-              <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
-                <FileText size={15} /> {t.fichaCompleta}
-              </Link>
+              {idea.detalle && (
+                <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
+                  <FileText size={15} /> {t.fichaCompleta}
+                </Link>
+              )}
             </div>
           </article>
         </div>

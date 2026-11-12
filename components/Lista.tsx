@@ -97,9 +97,11 @@ export default function Lista({ ideas, idioma }: { ideas: Idea[]; idioma: Idioma
                     {!!idea.presentacion?.length && (
                       <Presentacion slides={idea.presentacion} titulo={idea.nombre} idioma={idioma} />
                     )}
-                    <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
-                      <FileText size={15} /> {t.fichaCompleta}
-                    </Link>
+                    {idea.detalle && (
+                      <Link href={`/idea/${idea.numero}`} className="boton-secundario px-4 py-2">
+                        <FileText size={15} /> {t.fichaCompleta}
+                      </Link>
+                    )}
                   </div>
                 )}
               </div>
