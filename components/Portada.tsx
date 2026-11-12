@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LayoutGrid, Plus } from "lucide-react";
 import Burbujas from "./Burbujas";
 import SelectorIdioma from "./SelectorIdioma";
+import Tap from "./Tap";
 import { TEXTOS, type Idioma } from "@/lib/i18n";
 import type { Idea } from "@/lib/types";
 
@@ -91,14 +92,18 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
             >
               {t.introBurbujas}
             </p>
-            <button
-              type="button"
-              onClick={iniciar}
-              className="entra boton-primario mt-10 px-10 py-4 text-base shadow-lg shadow-tomate/30"
-              style={{ animationDelay: "1400ms" }}
-            >
-              {t.iniciar}
-            </button>
+            <span className="relative mt-10 inline-block">
+              <button
+                type="button"
+                onClick={iniciar}
+                className="entra boton-primario px-10 py-4 text-base shadow-lg shadow-tomate/30"
+                style={{ animationDelay: "1400ms" }}
+              >
+                {t.iniciar}
+              </button>
+              {/* el botón termina de aparecer a los ~2.1 s; la manita llega 3 s después */}
+              <Tap retraso={5100} className="left-[62%] top-[60%]" />
+            </span>
           </div>
           <SelectorIdioma
             idioma={idioma}

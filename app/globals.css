@@ -314,3 +314,61 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .aro-svg, .aro-pelicula, .aro-soplo { animation: none; }
 }
+/* Manita de "tap": aparece, presiona, suelta una onda y se va; cada 3 s */
+.tap {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  width: 0;
+  height: 0;
+}
+.tap-mano {
+  position: absolute;
+  left: -9px;
+  top: -2px;
+  color: #fff;
+  fill: rgb(var(--papel) / 0.85);
+  filter: drop-shadow(0 4px 10px rgb(0 0 0 / 0.5));
+  opacity: 0;
+  animation: tap-mano 3s ease-in-out var(--tap-retraso, 0s) infinite;
+}
+.tap-onda {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  opacity: 0;
+  animation: tap-onda 3s ease-out var(--tap-retraso, 0s) infinite;
+}
+@keyframes tap-mano {
+  0% { opacity: 0; transform: translate(26px, 30px) rotate(-12deg); }
+  14% { opacity: 1; transform: translate(0, 0) rotate(-12deg) scale(1); }
+  22% { transform: translate(0, 0) rotate(-12deg) scale(0.82); }
+  30% { transform: translate(0, 0) rotate(-12deg) scale(1); }
+  48% { opacity: 1; transform: translate(0, 0) rotate(-12deg); }
+  62%, 100% { opacity: 0; transform: translate(18px, 24px) rotate(-12deg); }
+}
+@keyframes tap-onda {
+  0%, 21% { opacity: 0; transform: scale(0.3); }
+  24% { opacity: 0.9; }
+  50%, 100% { opacity: 0; transform: scale(1.6); }
+}
+/* Contador de burbujas vistas */
+.contador-sube { animation: contador-sube 520ms cubic-bezier(.2,1.4,.4,1); }
+@keyframes contador-sube {
+  from { transform: translateY(70%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.contador-late { animation: contador-late 520ms ease-out; }
+@keyframes contador-late {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgb(var(--tomate) / 0.6); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); box-shadow: 0 0 0 14px rgb(var(--tomate) / 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tap-mano, .tap-onda { animation: none; }
+}

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import Link from "next/link";
 import { ArrowUpRight, FileText, Github, X } from "lucide-react";
 import Presentacion from "./Presentacion";
+import Tap from "./Tap";
 import { EtiquetaEstado } from "./Estado";
 import { resumenDe, stackDe, TEXTOS, type Idioma } from "@/lib/i18n";
 import type { Idea } from "@/lib/types";
@@ -66,6 +67,8 @@ export default function Burbujas({
   // Burbujas ya reventadas: desaparecen hasta que se recargan
   const [fase, setFase] = useState<Record<number, "reventando">>({});
   const [aroBajando, setAroBajando] = useState(false);
+  // proyectos vistos: sube al cerrar cada vista previa
+  const [vistos, setVistos] = useState(0);
   const [gotas, setGotas] = useState<Gota[]>([]);
   const [destello, setDestello] = useState(false);
 
@@ -213,7 +216,11 @@ export default function Burbujas({
   }, [saliendo]);
 
   // Al cerrar la ficha, la burbuja reventada ya no vuelve
-  const cerrar = useCallback(() => setAbierta(null), []);
+  const cerrar = useCallback(() => {
+    if (abierta === null) return;
+    setAbierta(null);
+    setVistos((v) => Math.min(v + 1, ideas.length));
+  }, [abierta, ideas.length]);
 
   const sinBurbujas = listo && Object.keys(fase).length >= ideas.length;
   const mostrarAro = sinBurbujas && abierta === null && !saliendo;
@@ -235,7 +242,7 @@ export default function Burbujas({
 
   return (
     <section className="flex h-[100svh] flex-col overflow-hidden">
-      <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-6 text-center sm:pt-8">
+      <div className="shrink-0 animate-[aparecer_500ms_ease-out_both] px-16 pb-2 pt-16 text-center sm:pt-8">
         <p className="font-firma text-xs font-medium uppercase tracking-[0.25em] text-tenue">
           {t.titulo.join(" ")}
           <span className="hidden sm:inline"> · Brian Hawkins</span>
@@ -305,6 +312,29 @@ export default function Burbujas({
         ))}
       </div>
 
+      {Object.keys(fase).length > 0 && !saliendo && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed left-4 top-4 z-40 animate-[aparecer_300ms_ease-out] sm:left-6 sm:top-6"
+        >
+          <span
+            key={vistos}
+            className={`inline-flex items-baseline gap-1.5 rounded-full border border-linea bg-hoja/90 px-4 py-2 text-sm text-tenue shadow-sm backdrop-blur ${vistos ? "contador-late" : ""}`}
+          >
+            {t.vistos}:
+            <span className="inline-flex items-baseline font-titulo text-lg font-bold leading-none tabular-nums">
+              <span className="inline-flex overflow-hidden text-tinta">
+                <span key={vistos} className="contador-sube">
+                  {vistos}
+                </span>
+              </span>
+              <span className="text-tenue">/{ideas.length}</span>
+            </span>
+          </span>
+        </div>
+      )}
+
       {mostrarAro && (
         <div className="pointer-events-none fixed inset-0 z-20 grid place-items-center px-6">
           <button
@@ -331,7 +361,8 @@ export default function Burbujas({
               <circle cx="100" cy="98" r="84" fill="url(#aro-pelicula)" className="aro-pelicula" />
               <circle cx="100" cy="98" r="84" fill="none" stroke="url(#aro-borde)" strokeWidth="10" />
             </svg>
-            <span className="aro-texto font-titulo text-xl font-bold leading-tight text-tinta sm:text-2xl">
+            {!aroBajando && <Tap retraso={2700} className="left-[62%] top-[44%]" />}
+            <span className="aro-texto font-titulo text-lg font-bold leading-tight text-tinta sm:text-xl">
               {t.recargar}
             </span>
             {[0, 1, 2, 3, 4].map((k) => (

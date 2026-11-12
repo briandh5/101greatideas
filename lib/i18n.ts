@@ -50,7 +50,8 @@ const ES = {
     "A continuación visualizarás una serie de proyectos, cada uno representado por una burbuja. Revienta cada una para ver de qué trata.",
   iniciar: "Iniciar",
   agregarIdea: "Agregar idea",
-  recargar: "Recargar burbujas",
+  recargar: "Click para recargar burbujas",
+  vistos: "Vistos",
   acercaDe: "Acerca de",
 };
 
@@ -96,7 +97,8 @@ const EN: typeof ES = {
     "Next you'll see a series of projects, each one shown as a bubble. Pop each one to find out what it's about.",
   iniciar: "Start",
   agregarIdea: "Add idea",
-  recargar: "Reload bubbles",
+  recargar: "Click to reload bubbles",
+  vistos: "Seen",
   acercaDe: "About",
 };
 
