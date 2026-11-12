@@ -50,6 +50,7 @@ export default function Burbujas({
   saliendo = false,
   onSalida,
   onRecargar,
+  onVacio,
 }: {
   ideas: Idea[];
   idioma: Idioma;
@@ -57,6 +58,8 @@ export default function Burbujas({
   onSalida?: () => void;
   /** Cuando ya no queda ninguna, el aro baja y se vuelven a soplar todas. */
   onRecargar?: () => void;
+  /** Avisa cuando se muestra el aro, para que los botones de abajo suban al centro. */
+  onVacio?: (vacio: boolean) => void;
 }) {
   const t = TEXTOS[idioma];
   const arena = useRef<HTMLDivElement>(null);
@@ -224,6 +227,11 @@ export default function Burbujas({
 
   const sinBurbujas = listo && Object.keys(fase).length >= ideas.length;
   const mostrarAro = sinBurbujas && abierta === null && !saliendo;
+  const vacio = mostrarAro && !aroBajando;
+  useEffect(() => {
+    onVacio?.(vacio);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vacio]);
 
   const recargar = () => {
     if (aroBajando) return;
@@ -336,7 +344,7 @@ export default function Burbujas({
       )}
 
       {mostrarAro && (
-        <div className="pointer-events-none fixed inset-0 z-20 grid place-items-center px-6">
+        <div className="pointer-events-none fixed inset-x-0 top-0 bottom-[calc(20svh+120px)] z-20 flex items-end justify-center px-6 pb-2">
           <button
             type="button"
             onClick={recargar}
@@ -362,7 +370,7 @@ export default function Burbujas({
               <circle cx="100" cy="98" r="84" fill="none" stroke="url(#aro-borde)" strokeWidth="10" />
             </svg>
             {!aroBajando && <Tap retraso={2700} className="left-[62%] top-[44%]" />}
-            <span className="aro-texto font-titulo text-lg font-bold leading-tight text-tinta sm:text-xl">
+            <span className="aro-texto font-titulo text-sm font-bold leading-tight text-tinta/85 sm:text-[15px]">
               {t.recargar}
             </span>
             {[0, 1, 2, 3, 4].map((k) => (

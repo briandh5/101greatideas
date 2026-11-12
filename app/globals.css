@@ -247,7 +247,7 @@ body {
 /* Aro que sopla burbujas: aparece cuando ya se reventaron todas */
 .aro {
   position: relative;
-  width: min(62vw, 240px);
+  width: min(40vw, 160px);
   aspect-ratio: 200 / 290;
   animation: aro-sube 700ms cubic-bezier(.2,1.3,.4,1) both;
   -webkit-tap-highlight-color: transparent;
@@ -265,8 +265,8 @@ body {
 .aro-pelicula { animation: pelicula 2.4s ease-in-out infinite; transform-origin: 100px 98px; }
 .aro-texto {
   position: absolute;
-  left: 12%;
-  right: 12%;
+  left: 15%;
+  right: 15%;
   top: 33.8%;
   transform: translateY(-50%);
   text-align: center;

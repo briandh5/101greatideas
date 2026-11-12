@@ -23,6 +23,8 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
   const [vista, setVista] = useState<Vista>("intro");
   const [saliendoIntro, setSaliendoIntro] = useState(false);
   const [explotando, setExplotando] = useState(false);
+  // sin burbujas en pantalla: los botones suben al centro junto al aro (triple opción)
+  const [vacio, setVacio] = useState(false);
   // a dónde llevar al terminar la explosión: arriba del listado o a "Sobre la guía"
   const destino = useRef<"arriba" | "acerca">("arriba");
   // cambia en cada regreso para que las burbujas se vuelvan a disparar desde abajo
@@ -57,6 +59,7 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
   };
 
   const alTerminarExplosion = () => {
+    setVacio(false);
     history.pushState(null, "", ANCLA);
     setExplotando(false);
     setVista("todos");
@@ -70,6 +73,7 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
   };
 
   const volver = () => {
+    setVacio(false);
     history.pushState(null, "", window.location.pathname + window.location.search);
     window.scrollTo({ top: 0 });
     setTanda((n) => n + 1);
@@ -120,26 +124,35 @@ export default function Portada({ ideas, idioma, children }: { ideas: Idea[]; id
           saliendo={explotando}
           onSalida={alTerminarExplosion}
           onRecargar={() => setTanda((n) => n + 1)}
+          onVacio={setVacio}
         />
       )}
 
       {vista === "todos" && <div className="animate-[aparecer_300ms_ease-out]">{children}</div>}
 
       {vista === "burbujas" && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-3 z-30 flex flex-col items-center gap-1.5 px-4 animate-[aparecer_500ms_ease-out_both] sm:bottom-5">
+        <div
+          className={`pointer-events-none fixed inset-x-0 z-30 flex flex-col items-center px-4 animate-[aparecer_500ms_ease-out_both] transition-all duration-700 ease-[cubic-bezier(.2,1.2,.4,1)] ${
+            vacio ? "bottom-[20svh] gap-3" : "bottom-3 gap-1.5 sm:bottom-5"
+          }`}
+        >
           <button
             type="button"
             onClick={() => verTodos()}
             disabled={explotando}
-            className="boton-primario pointer-events-auto whitespace-nowrap px-6 shadow-lg shadow-tomate/30"
+            className={`boton-primario pointer-events-auto whitespace-nowrap shadow-lg shadow-tomate/30 transition-all duration-700 ${
+              vacio ? "px-9 py-4 text-lg" : "px-6"
+            }`}
           >
-            <LayoutGrid size={17} /> {t.verTodos}
+            <LayoutGrid size={vacio ? 21 : 17} /> {t.verTodos}
           </button>
           <button
             type="button"
             onClick={() => verTodos("acerca")}
             disabled={explotando}
-            className="pointer-events-auto px-3 py-1 text-sm font-medium text-tinta underline decoration-1 underline-offset-4 transition hover:text-tomate"
+            className={`pointer-events-auto px-3 py-1 font-medium text-tinta underline decoration-1 underline-offset-4 transition-all duration-700 hover:text-tomate ${
+              vacio ? "text-lg" : "text-sm"
+            }`}
           >
             {t.acercaDe}
           </button>
