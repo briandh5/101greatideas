@@ -42,6 +42,17 @@ const ES = {
   anterior: "Slide anterior",
   siguiente: "Slide siguiente",
   de: "de",
+  instruccionBurbujas: "Haz click en alguna burbuja para revelar el proyecto",
+  verTodos: "Ver todos los proyectos",
+  volverBurbujas: "Volver a las burbujas",
+  proyecto: "Proyecto",
+  introBurbujas:
+    "A continuación visualizarás una serie de proyectos, cada uno representado por una burbuja. Revienta cada una para ver de qué trata.",
+  iniciar: "Iniciar",
+  agregarIdea: "Agregar idea",
+  recargar: "Click para recargar burbujas",
+  vistos: "Vistos",
+  acercaDe: "Acerca de",
 };
 
 const EN: typeof ES = {
@@ -78,6 +89,17 @@ const EN: typeof ES = {
   anterior: "Previous slide",
   siguiente: "Next slide",
   de: "of",
+  instruccionBurbujas: "Click on a bubble to reveal the project",
+  verTodos: "See all projects",
+  volverBurbujas: "Back to the bubbles",
+  proyecto: "Project",
+  introBurbujas:
+    "Next you'll see a series of projects, each one shown as a bubble. Pop each one to find out what it's about.",
+  iniciar: "Start",
+  agregarIdea: "Add idea",
+  recargar: "Click to reload bubbles",
+  vistos: "Seen",
+  acercaDe: "About",
 };
 
 export type Textos = typeof ES;
