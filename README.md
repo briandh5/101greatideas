@@ -4,7 +4,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 
 Índice de las apps que voy construyendo, una por una, en el orden en que nacen.
 
-**Avance:** 11 publicadas · 13 registradas · meta 101
+**Avance:** 11 publicadas · 14 registradas · meta 101
 
 | # | App | Qué hace | Stack | Código | En vivo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -21,6 +21,7 @@ _By [Brian Hawkins](https://www.linkedin.com/in/briandh5/)_
 | 11 | Aegis AI Safety Dashboard | Panel de observabilidad para LLMs con prevención de jailbreaks, gráficas interactivas y componentes accesibles de nivel producción. | React 19 · TypeScript · Tailwind · Radix UI · Framer Motion · Recharts · Vercel | [briandh5/aegis](https://github.com/briandh5/aegis) | — | En construcción |
 | 12 | Atlas Muscular | Lámina interactiva de anatomía estilo atlas: un écorché realista en vista anterior y posterior con 16 grupos musculares. Al pasar el cursor, el músculo se ilumina y aparece una ficha con su función y de 3 a 5 ejercicios para trabajarlo. | React 19 · Vite · Tailwind · Framer Motion · SVG | [briandh5/atlasmuscular](https://github.com/briandh5/atlasmuscular) | [atlasmuscular.vercel.app](https://atlasmuscular.vercel.app/) | Publicada |
 | 13 | Therapeutic StoryWeaver | App interactiva de cuentos ilustrados con perfiles por edad y paneles de intervención clínica para terapeutas. Tres cuentos (niños, adolescentes, adultos) pintados en el navegador con pinceladas al estilo Van Gogh; cada escena abre preguntas de reflexión, la metáfora clave y una dinámica sugerida. | React 19 · Vite · Tailwind · Framer Motion · Canvas | — | — | En construcción |
+| 14 | Color Drinks Bar | Web app para vender los paquetes de una barra de bebidas para eventos: intro animada de 1.5 s, tarjetas deslizables con los 8 paquetes reales, filtro que recomienda paquete o combinación según las bebidas, cotizador por número de vasos, calendario con días disponibles y reserva por WhatsApp, más una página /admin para bloquear días pagados. | React 19 · Vite · Tailwind · Framer Motion · Vercel Functions · Upstash Redis | [briandh5/colordrinksbar](https://github.com/briandh5/colordrinksbar) | — | En construcción |
 
 Las ideas con enlace en el nombre tienen su ficha completa en la carpeta [`ideas/`](ideas/).
 

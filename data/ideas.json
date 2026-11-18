@@ -179,5 +179,17 @@
     "en": {
       "resumen": "Interactive illustrated story app with age-based profiles and clinical intervention panels for therapists. Three stories (children, teens, adults) painted in the browser with Van Gogh-style brushstrokes; each scene opens reflection questions, the key metaphor and a suggested exercise."
     }
+  },
+  {
+    "numero": 14,
+    "nombre": "Color Drinks Bar",
+    "resumen": "Web app para vender los paquetes de una barra de bebidas para eventos: intro animada de 1.5 s, tarjetas deslizables con los 8 paquetes reales, filtro que recomienda paquete o combinación según las bebidas, cotizador por número de vasos, calendario con días disponibles y reserva por WhatsApp, más una página /admin para bloquear días pagados.",
+    "estado": "En construcción",
+    "stack": "React 19 · Vite · Tailwind · Framer Motion · Vercel Functions · Upstash Redis",
+    "creada": "2026-11-16",
+    "en": {
+      "resumen": "Web app to sell an event drink bar's packages: a 1.5 s animated intro, swipeable cards for the 8 real packages, a drink filter that recommends a package or combo, a quote calculator by number of cups, a calendar of available days with WhatsApp booking, and an /admin page to block paid days."
+    },
+    "repo": "https://github.com/briandh5/colordrinksbar"
   }
 ]
